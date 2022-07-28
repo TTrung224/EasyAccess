@@ -37,15 +37,15 @@ h1 {
     'search table table table table table table'
     'search table table table table table table'
     'search table table table table table table'
-    'search table table table table table table';
+    'search page page table page page page';
   gap: 10px;
 }
 
 .page-btn{
-  padding: 15px;
+  padding: 12px;
   text-decoration: none;
   color: white;
-  background-color: #71a0e6;
+  background-color: #5584cc;
   border-width: 2px;
   border-color: black;
 }
@@ -54,11 +54,11 @@ h1 {
 }
 
 .Previous-Next-btn{
-  padding: 15px;
+  padding: 12px;
   width: 100px;
   text-decoration: none;
   color: white;
-  background-color: rgb(56, 206, 136);
+  background-color: rgb(45, 167, 110);
   border-width: 2px;
   border-color: black;
 }
