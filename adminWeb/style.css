@@ -47,6 +47,7 @@ h1 {
 .table-div{
   display:flex;
   flex-direction: column;
+  width: 100%;
 }
 .page-btn{
   padding: 12px;
@@ -74,4 +75,7 @@ h1 {
 }
 .page{
   height:50px;
+  display:flex;
+  justify-content:center;
+  align-items: center;
 }
