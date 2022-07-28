@@ -43,7 +43,6 @@ $result = mysqLi_query($conn, $sql);
                         <th>ID</th>
                         <th>Name</th>
                         <th>Access time</th>
-                        <th>Access day</th>
                     </tr>
                     <?php
                     if(mysqLi_num_rows($result) >0){
