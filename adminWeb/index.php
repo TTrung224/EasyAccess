@@ -69,7 +69,7 @@ $nr = mysqLi_num_rows($result);
                 }
                 ?>
             </table>
-            <div>
+            <div class="page">
             <?php
             $sql = "SELECT * FROM access";
             $result = mysqLi_query($conn, $sql);
