@@ -80,7 +80,7 @@ $nr = mysqLi_num_rows($result);
                 echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>";
             }
 
-            for($i=1;$i< $total_page;$i++){
+            for($i=1;$i<= $total_page;$i++){
                 echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
             }
 
