@@ -74,15 +74,15 @@ $nr = mysqLi_num_rows($result);
                 $total_page = ceil($nr/$num_per_page);
 
                 if($page>1){
-                    echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>"
+                    echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>";
                 }
 
                 for($i=1;$i< $total_page;$i++){
-                    echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>"
+                    echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
                 }
 
                 if($i >$page){
-                    echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>"
+                    echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>";
                 }
                 ?>
             </div>
