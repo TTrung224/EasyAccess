@@ -67,7 +67,9 @@ $nr = mysqLi_num_rows($result);
                     }
                     ?>
                 </table>
-                <?php
+            </div>
+            <div class="pagination">
+            <?php
                 $sql = "SELECT * FROM access";
                 $result = mysqLi_query($conn, $sql);
                 $nr = mysqLi_num_rows($result); 

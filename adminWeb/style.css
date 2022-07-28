@@ -29,32 +29,38 @@ h1 {
 
 .table-div { grid-area: table; }
 .search-area { grid-area: search; }
+.paginationpagination{grid-area:page;}
 
 .page-container{
     display: grid;
   grid-template-areas:
-    'search table table table table table'
-    'search table table table table table'
-    'search table table table table table';
+    'search table table table table table table'
+    'search table table table table table table'
+    'search table table table table table table'
+    'search table table table table table table';
   gap: 10px;
 }
 
 .page-btn{
-  padding: 20px;
+  padding: 15px;
   text-decoration: none;
   color: white;
   background-color: #71a0e6;
+  border-width: 2px;
+  border-color: black;
 }
 .page-btn:hover{
   background-color: #1276c2;
 }
 
 .Previous-Next-btn{
-  padding: 20px;
+  padding: 15px;
   width: 100px;
   text-decoration: none;
   color: white;
   background-color: rgb(56, 206, 136);
+  border-width: 2px;
+  border-color: black;
 }
 .Previous-Next-btn:hover{
   background-color: rgb(23, 176, 125);
