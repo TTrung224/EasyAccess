@@ -72,3 +72,6 @@ h1 {
 .Previous-Next-btn:hover{
   background-color: rgb(23, 176, 125);
 }
+.page{
+  height:50px;
+}
