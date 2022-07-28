@@ -67,11 +67,7 @@ $nr = mysqLi_num_rows($result);
                     }
                     ?>
                 </table>
-                hello guyssfwertqc3r
-                rtvyuw6eutyu
-            </div>
-            <div class="pagination">
-            <?php
+                <?php
                 $sql = "SELECT * FROM access";
                 $result = mysqLi_query($conn, $sql);
                 $nr = mysqLi_num_rows($result); 
@@ -89,6 +85,9 @@ $nr = mysqLi_num_rows($result);
                     echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>";
                 }
                 ?>
+            </div>
+            <div class="pagination">
+            
             </div>
     </div>
 </body>
