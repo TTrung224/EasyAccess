@@ -20,8 +20,8 @@ if(isset($_GET['page'])){
 }else{
     $page = 1;
 }
-$num_per_page = 3;
-$start_from = ($page -1)* $num_per_page;
+$num_per_page = 03;
+$start_from = ($page -1)* 03;
 
 //Make access table
 $sql = "SELECT * FROM access limit $start_from, $num_per_page";
