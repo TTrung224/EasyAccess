@@ -54,7 +54,7 @@ h1 {
   text-decoration: none;
   color: white;
   background-color: #5584cc;
-  border-width: 5px;
+  border-width: 10px;
   border-color: black;
 }
 .page-btn:hover{
@@ -67,7 +67,7 @@ h1 {
   text-decoration: none;
   color: white;
   background-color: rgb(45, 167, 110);
-  border-width: 5px;
+  border-width: 10px;
   border-color: black;
   text-align: center;
 }
