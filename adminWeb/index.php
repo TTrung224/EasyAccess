@@ -14,8 +14,20 @@ if (!$conn) {
 }
 echo "Connected successfully";
 
-$sql = "SELECT * FROM access";
+//Pagination
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}else{
+    $page = 1;
+}
+$num_per_page = 3;
+$start_from = ($page -1)* $num_per_page;
+
+//Make access table
+$sql = "SELECT * FROM access limit $start_from, $num_per_page";
 $result = mysqLi_query($conn, $sql);
+$nr = mysqLi_num_rows($result);
+
 
 ?>
 <!DOCTYPE html>
@@ -55,6 +67,24 @@ $result = mysqLi_query($conn, $sql);
                     }
                     ?>
                 </table>
+                <?php
+                $sql = "SELECT * FROM access";
+                $result = mysqLi_query($conn, $sql);
+                $nr = mysqLi_num_rows($result); 
+                $total_page = ceil($nr/$num_per_page);
+
+                if($page>1){
+                    echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>"
+                }
+
+                for($i=1;$i< $total_page;$i++){
+                    echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>"
+                }
+
+                if($i >$page){
+                    echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>"
+                }
+                ?>
             </div>
     </div>
 </body>

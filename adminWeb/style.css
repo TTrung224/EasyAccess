@@ -38,3 +38,24 @@ h1 {
     'search table table table table table';
   gap: 10px;
 }
+
+.page-btn{
+  padding: 20px;
+  text-decoration: none;
+  color: white;
+  background-color: #71a0e6;
+}
+.page-btn:hover{
+  background-color: #1276c2;
+}
+
+.Previous-Next-btn{
+  padding: 20px;
+  width: 100px;
+  text-decoration: none;
+  color: white;
+  background-color: rgb(56, 206, 136);
+}
+.Previous-Next-btn:hover{
+  background-color: rgb(23, 176, 125);
+}
