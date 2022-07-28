@@ -6,13 +6,20 @@ $dbname = "heroku_a0c3ccec1186e2e";
 
 
 // Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$conn = new mysqLi($servername, $username, $password, $dbname);
 
 // Check connection
-if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
+if ($conn) {
+  mysqLi_query($conn,"SET NAME 'utf8' ");
+  echo "connect successfully";
+  echo "<br>";
+}else{
+    echo "Connected failed";
 }
-echo "Connected successfully";
+
+
+$sql = "SELECT * FROM access";
+$result = mysqLi_query($conn, $sql);
 
 ?>
 <!DOCTYPE html>
@@ -26,28 +33,27 @@ echo "Connected successfully";
 </head>
 <body>  
     <h1>Access Info</h1>
-    <div class="search-area">
-        <form action="">
-            <p>Search for Student or Staff</p>
-            <label for="search-bar">Enter student or staff id/name</label>
-            <input type="text" id="search-bar">
-            
-        </form>
-    </div>
     <div class="page-container">
-        <div class="table-div">
-            <table class="main-table">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Access time</th>
-                    <th>Access day</th>
-                </tr>
-                <tr>
-                    <td>test</td>
-               </tr>
-            </table>
+        <div class="search-area">
+            <form action="">
+                <p>Search for Student or Staff</p>
+                <label for="search-bar">Enter student or staff id/name</label>
+                <input type="text" id="search-bar">
+            </form>
         </div>
+            <div class="table-div">
+                <table class="main-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Access time</th>
+                        <th>Access day</th>
+                    </tr>
+                    <tr>
+                        <td>test</td>
+                </tr>
+                </table>
+            </div>
     </div>
 </body>
 </html>
