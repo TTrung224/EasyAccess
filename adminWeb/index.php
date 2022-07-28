@@ -67,6 +67,8 @@ $nr = mysqLi_num_rows($result);
                     }
                     ?>
                 </table>
+                hello guyssfwertqc3r
+                rtvyuw6eutyu
             </div>
             <div class="pagination">
             <?php
