@@ -42,6 +42,7 @@ $nr = mysqLi_num_rows($result);
 <body>  
     <h1>Access Info</h1>
     <div class="page-container">
+
         <div class="search-area">
             <form action="">
                 <p>Search for Student or Staff</p>
@@ -49,46 +50,46 @@ $nr = mysqLi_num_rows($result);
                 <input type="text" id="search-bar">
             </form>
         </div>
-            <div class="table-div">
-                <table class="main-table">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Access time</th>
-                    </tr>
-                    <?php
-                    if(mysqLi_num_rows($result) >0){
 
-                        while($row = mysqli_fetch_array($result)){
-                            echo "<tr> <td>". $row['personId']."</td>";
-                            echo "<td>". $row['name']."</td>";
-                            echo "<td>". $row['dateTime']."</td> </tr>";
-                        }
-                    }
-                    ?>
-                </table>
+        <div class="table-div">
+            <table class="main-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Access time</th>
+                </tr>
                 <?php
-                $sql = "SELECT * FROM access";
-                $result = mysqLi_query($conn, $sql);
-                $nr = mysqLi_num_rows($result); 
-                $total_page = ceil($nr/$num_per_page);
+                if(mysqLi_num_rows($result) >0){
 
-                if($page>1){
-                    echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>";
-                }
-
-                for($i=1;$i< $total_page;$i++){
-                    echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
-                }
-
-                if($i >$page){
-                    echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>";
+                    while($row = mysqli_fetch_array($result)){
+                        echo "<tr> <td>". $row['personId']."</td>";
+                        echo "<td>". $row['name']."</td>";
+                        echo "<td>". $row['dateTime']."</td> </tr>";
+                    }
                 }
                 ?>
+            </table>
+            <div>
+            <?php
+            $sql = "SELECT * FROM access";
+            $result = mysqLi_query($conn, $sql);
+            $nr = mysqLi_num_rows($result); 
+            $total_page = ceil($nr/$num_per_page);
+
+            if($page>1){
+                echo "<a href='index.php?page=".($page-1)."' class='Previous-Next-btn'>Previous</a>";
+            }
+
+            for($i=1;$i< $total_page;$i++){
+                echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
+            }
+
+            if($i >$page){
+                echo "<a href='index.php?page=".($page+1)."' class='Previous-Next-btn'>Next</a>";
+            }
+            ?>
             </div>
-            <div class="pagination">
-            
-            </div>
+        </div>
     </div>
 </body>
 </html>

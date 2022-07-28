@@ -27,7 +27,7 @@ h1 {
     color: white;
 }
 
-.table-div { grid-area: table; }
+/* .table-div { grid-area: table; }
 .search-area { grid-area: search; }
 .paginationpagination{grid-area:page;}
 
@@ -38,9 +38,16 @@ h1 {
     'search table table table table table table'
     'search table table table table table table'
     'search table table table table table table';
+  
   gap: 10px;
+} */
+.page-container{
+  display:flex;
 }
-
+.table-div{
+  display:flex;
+  flex-direction: column;
+}
 .page-btn{
   padding: 12px;
   text-decoration: none;
