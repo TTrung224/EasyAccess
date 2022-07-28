@@ -15,7 +15,7 @@ if (!$conn) {
 echo "Connected successfully";
 
 $sql = "SELECT * FROM access";
-$result = mysqLi_query($conn, $sql)
+$result = mysqLi_query($conn, $sql);
 
 ?>
 <!DOCTYPE html>
@@ -45,13 +45,19 @@ $result = mysqLi_query($conn, $sql)
                         <th>Access time</th>
                         <th>Access day</th>
                     </tr>
-                    <tr>
-                        <td>test</td>
-                </tr>
+                    <?php
+                    if(mysqLi_num_rows($result) >0){
+
+                        while($row = mysqli_fetch_array($result)){
+                            echo "<tr> <td>". $row['personId']."</td>";
+                            echo "<td>". $row['name']."</td>";
+                            echo "<td>". $row['dateTime']."</td> </tr>";
+                        }
+                    }
+                    ?>
                 </table>
             </div>
     </div>
 </body>
 </html>
-<?php
-echo "testing";
+
