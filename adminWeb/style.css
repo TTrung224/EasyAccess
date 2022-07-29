@@ -8,23 +8,23 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
-  }
-  
-  .main-table td, .main-table th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .main-table tr:nth-child(even){background-color: #f2f2f2;}
-  
-  .main-table tr:hover {background-color: #ddd;}
-  
-  .main-table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #0462aa;
-    color: white;
+}
+
+.main-table td, .main-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.main-table tr:nth-child(even){background-color: #f2f2f2;}
+
+.main-table tr:hover {background-color: #ddd;}
+
+.main-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0462aa;
+  color: white;
 }
 
 
@@ -42,8 +42,6 @@ h1 {
   text-decoration: none;
   color: white;
   background-color: #5584cc;
-  border: none;
-  
 }
 .page-btn:hover{
   background-color: #1276c2;
@@ -52,8 +50,6 @@ h1 {
   text-decoration: none;
   color: black;
 }
-
-
 
 .page{
   height:50px;
