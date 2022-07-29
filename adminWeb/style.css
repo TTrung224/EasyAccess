@@ -37,31 +37,24 @@ h1 {
   flex-direction: column;
   width: 100%;
 }
-.page-btn{
+.page .page-btn{
   padding: 12px;
   text-decoration: none;
   color: white;
   background-color: #5584cc;
-  border-width: 10px;
-  border-color: black;
+  border: none;
+  
 }
 .page-btn:hover{
   background-color: #1276c2;
 }
-
-.Previous-Next-btn{
-  padding: 12px;
-  width: 100px;
+.cancel-btn{
   text-decoration: none;
-  color: white;
-  background-color: rgb(45, 167, 110);
-  border-width: 10px;
-  border-color: black;
-  text-align: center;
+  color: black;
 }
-.Previous-Next-btn:hover{
-  background-color: rgb(23, 176, 125);
-}
+
+
+
 .page{
   height:50px;
   display:flex;
