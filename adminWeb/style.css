@@ -52,6 +52,7 @@ h1 {
   text-decoration: none;
   color: white;
   background-color: rgb(202, 72, 72);
+  border: none;
 }
 .cancel-btn:hover{
   background-color: rgb(212, 46, 46);
@@ -61,6 +62,7 @@ h1 {
   text-decoration: none;
   color: white;
   background-color: #4c7fcb;
+  border:none;
 }
 .filter-btn:hover{
   background-color: #187dca;
