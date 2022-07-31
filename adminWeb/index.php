@@ -20,8 +20,8 @@ if(isset($_GET['page'])){
 }else{
     $page = 1;
 }
-$num_per_page = 03;
-$start_from = ($page -1)* 03;
+$num_per_page = 05;
+$start_from = ($page -1)* 05;
 
 //Make access table
 $sql = "SELECT * FROM access a ";
@@ -100,7 +100,7 @@ echo $sql;
                 <input type="datetime-local" id="end-time-range" name="endTime"
                 value = "<?= (isset($_GET['endTime'])) ? $_GET['endTime'] : ""?>"
                 >
-                <input type="submit" name="filter" value="Filter">
+                <input type="submit" name="filter" class="filter-btn" value="Filter">
                 <button><a href="index.php" class="cancel-btn">Cancel</a></button>
             </form>
             <?php
