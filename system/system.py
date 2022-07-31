@@ -70,6 +70,7 @@ def insertDb(id, name):
     with connection:
         with connection.cursor() as cursor:
             sql = f"insert into access (personId, name, dateTime) values ('{id}', '{name}', '{time}')"
+            print(sql);
             cursor.execute(sql)
     connection.commit()
 
@@ -86,7 +87,7 @@ while True:
 
     print("temperature = " + str(obj_tem))
 
-    if (face_recognition == True) and (obj_tem <= BASE_DEGREE):
+    if (face_recognition == True) and (obj_tem >= BASE_DEGREE):
         door_open()
         time.sleep(5)
         door_lock()

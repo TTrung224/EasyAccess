@@ -1,13 +1,11 @@
 # import the necessary packages
 from imutils.video import VideoStream
 import imagezmq
-import argparse
 import socket
 import time
 
 
-# initialize the ImageSender object with the socket address of the
-# server
+# initialize the ImageSender object with the socket address of the server
 sender = imagezmq.ImageSender(connect_to="tcp://192.168.2.248:5555")
 
 # get the host name, initialize the video stream, and allow the
