@@ -67,12 +67,12 @@ def get_temperature():
 def insertDb(id, name):
     now = datetime.now()
     time = now.strftime("%Y/%m/%d %H:%M:%S")
+    connection.ping()
     with connection:
         with connection.cursor() as cursor:
-            sql = f"insert into access (personId, name, dateTime) values ('{id}', '{name}', '{time}')"
-            print(sql);
-            cursor.execute(sql)
-    connection.commit()
+            sql = "insert into access (personId, name, dateTime) values (%s, %s, %s)"
+            cursor.execute(sql, (id, name, time))
+        connection.commit()
 
 
 # main program
