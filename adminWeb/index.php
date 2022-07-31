@@ -101,7 +101,7 @@ echo $sql;
                 value = "<?= (isset($_GET['endTime'])) ? $_GET['endTime'] : ""?>"
                 >
                 <input type="submit" name="filter" class="filter-btn" value="Filter">
-                <button><a href="index.php" class="cancel-btn">Cancel</a></button>
+                <button class="cancel-btn"><a href="index.php" >Cancel</a></button>
             </form>
             <?php
 
