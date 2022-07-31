@@ -53,11 +53,11 @@ h1 {
   color: white;
   background-color: rgb(202, 72, 72);
   border: none;
-  padding: 2px;
+  padding: 5px;
   border-radius: 5px;
 }
 .cancel-btn:hover{
-  background-color: rgb(212, 46, 46);
+  background-color: rgb(211, 27, 27);
 }
 
 .filter-btn{
@@ -65,11 +65,11 @@ h1 {
   color: white;
   background-color: #4c7fcb;
   border:none;
-  padding: 2px;
+  padding: 5px;
   border-radius: 5px;
 }
 .filter-btn:hover{
-  background-color: #187dca;
+  background-color: #0c75c5;
 }
 .page{
   height:50px;
