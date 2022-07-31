@@ -53,6 +53,8 @@ h1 {
   color: white;
   background-color: rgb(202, 72, 72);
   border: none;
+  padding: 2px;
+  border-radius: 5px;
 }
 .cancel-btn:hover{
   background-color: rgb(212, 46, 46);
@@ -63,6 +65,8 @@ h1 {
   color: white;
   background-color: #4c7fcb;
   border:none;
+  padding: 2px;
+  border-radius: 5px;
 }
 .filter-btn:hover{
   background-color: #187dca;
