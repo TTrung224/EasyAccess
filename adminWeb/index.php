@@ -1,17 +1,10 @@
 <?php
-$servername = "us-cdbr-east-06.cleardb.net";
-$username = "b19dfc7a972b92";
-$password = "5af8fdbd";
-$dbname = "heroku_a0c3ccec1186e2e";
+@include 'config.php';
 
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-
-// Check connection
-if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
+session_start();
+if(!isset($_SESSION['logedIn'])){
+    header('location:login_form.php');
 }
-echo "Connected successfully";
 
 //Pagination
 if(isset($_GET['page'])){
@@ -20,8 +13,8 @@ if(isset($_GET['page'])){
     $page = 1;
 }
 
-$num_per_page = 05;
-$start_from = ($page -1)* 05;
+$num_per_page = 10;
+$start_from = ($page -1) * 10;
 
 $sql = "SELECT * FROM access a ";
 
@@ -74,15 +67,15 @@ $result = mysqLi_query($conn, $sql);
         <div class="search-area">
             <form action="index.php" method="get" >
                 <p>Filter access data:</p>
-                <label for="search-bar">Enter student or staff id</label>
+                <label for="search-bar">Enter student or staff id:</label>
                 <input type="text" id="search-bar" name="id"
                 value = "<?= (isset($_GET['id'])) ? $_GET['id'] : ""?>"
                 >
-                <label for="start-time-range">Start date-time</label>
+                <label for="start-time-range">Start date-time:</label>
                 <input type="datetime-local" id="start-time-range" name="startTime"
                 value = "<?= (isset($_GET['startTime'])) ? $_GET['startTime'] : ""?>"
                 >
-                <label for="end-time-range">End date-time</label>
+                <label for="end-time-range">End date-time:</label>
                 <input type="datetime-local" id="end-time-range" name="endTime"
                 value = "<?= (isset($_GET['endTime'])) ? $_GET['endTime'] : ""?>"
                 >
@@ -112,23 +105,24 @@ $result = mysqLi_query($conn, $sql);
                 }
                 ?>
             </table>
-            <div class="page">
-            <?php
 
-            for($i=1;$i<= $total_page;$i++){
-                
+            <div class="page">
+
+            <?php for($i=1;$i<= $total_page;$i++){
                 if(isset($_GET['id']) or isset($_GET['startTime']) or isset($_GET['endTime'])){?>
+
                 <form action="index.php" method="get">
                     <input type="hidden" name="id" value=<?=$_GET['id']?>>
                     <input type="hidden" name="startTime" value=<?=$_GET['startTime']?>>
                     <input type="hidden" name="endTime" value=<?=$_GET['endTime']?>>
                     <input type="submit" name="page" value="<?=$i?>" class ="page-btn">
                 </form>
+
                 <?php } else{
                     echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
                 }
-            }
-            ?>
+            }?>
+
             </div>
         </div>
     </div>

@@ -1,9 +1,8 @@
 <?php
-
 @include 'config.php';
 
 session_start();
-if(!isset($_SESSION['logedIn'])){
+if(isset($_SESSION['logedIn'])){
    header('location:index.php');
 }
 
@@ -20,7 +19,7 @@ if(isset($_POST['submit'])){
 
       if(password_verify($pass, $row['password'])){
          $_SESSION['logedIn'] = true;
-         header('location: uder_page.php');
+         header('location: index.php');
       }else{
          $error[] = 'incorrect email or password!';
       }
@@ -39,7 +38,7 @@ if(isset($_POST['submit'])){
    <title>login form</title>
 
    <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="style.css">
 </head>
 <body>
    <div class="form-container">
