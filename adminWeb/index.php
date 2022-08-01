@@ -4,7 +4,6 @@ $username = "b19dfc7a972b92";
 $password = "5af8fdbd";
 $dbname = "heroku_a0c3ccec1186e2e";
 
-
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -20,21 +19,12 @@ if(isset($_GET['page'])){
 }else{
     $page = 1;
 }
+
 $num_per_page = 05;
 $start_from = ($page -1)* 05;
 
-//Make access table
 $sql = "SELECT * FROM access a ";
 
-// if(isset($_GET['filter'])){
-//     $id = $_GET['id'];
-//     $startTime = str_replace("T", " ", $_GET['startTime']) . ":00";
-
-//     echo $startTime;
-//     $endTime = $_GET['endTime'];
-//     $query = mysqLi_query($conn,"select * from access where personId ='$id' and dateTime between '$startTime' and '$endTime' order by dateTime ");
-
-// }
 if(isset($_GET['id']) or isset($_GET['startTime']) or isset($_GET['endTime'])){
     $filters = [];
         if($_GET['id'] != ""){
@@ -64,12 +54,8 @@ $result = mysqLi_query($conn, $sql);
 $nr = mysqLi_num_rows($result); 
 $total_page = ceil($nr/$num_per_page);
 
-$sql = $sql . "limit $start_from, $num_per_page";
+$sql = $sql . "ORDER BY dateTime DESC limit $start_from, $num_per_page";
 $result = mysqLi_query($conn, $sql);
-
-echo $sql;
-// id  timerange  abc  paging
-
 
 ?>
 <!DOCTYPE html>
@@ -101,7 +87,7 @@ echo $sql;
                 value = "<?= (isset($_GET['endTime'])) ? $_GET['endTime'] : ""?>"
                 >
                 <input type="submit" name="filter" class="filter-btn" value="Filter">
-                <button class="cancel-btn"><a href="index.php" >Cancel</a></button>
+                <button class="cancel-btn"><a class="cancel-btn" href="index.php" >Cancel</a></button>
             </form>
             <?php
 
@@ -128,7 +114,6 @@ echo $sql;
             </table>
             <div class="page">
             <?php
-            
 
             for($i=1;$i<= $total_page;$i++){
                 
@@ -143,19 +128,9 @@ echo $sql;
                     echo "<a href='index.php?page=".$i."' class='page-btn'>$i</a>";
                 }
             }
-
-            
             ?>
             </div>
         </div>
     </div>
-
-    <?php
-    // $a = "2022-07-28T16:55";
-    // $a[10] = " ";
-    // $a = $a . ":00";
-    // echo $a;
-    ?>
 </body>
 </html>
-
