@@ -62,6 +62,8 @@ $result = mysqLi_query($conn, $sql);
 </head>
 <body>  
     <h1>Access Info</h1>
+    <a id="logout-btn" href="logout.php">Logout</a>
+    
     <div class="page-container">
 
         <div class="search-area">

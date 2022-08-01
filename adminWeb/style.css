@@ -12,6 +12,33 @@ h1 {
     text-align: center;
 }
 
+#logout-btn{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: #333;
+  border-width: 0.1px;
+  background-color: white;
+}
+
+#logout-btn:hover{
+  background-color: rgb(180, 180, 180);
+  border-radius: 8px;
+  border-style: solid;
+  border-color: #333;
+  border-width: 0.1px;
+}
+
+#logout-btn{
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  color: black;
+}
+
 .search-area{
   font-size: larger;
 }
