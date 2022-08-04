@@ -11,10 +11,15 @@ from datetime import datetime
 PIN_NUM = 17
 BASE_DEGREE = 37
 SERVO_FREQ = 50
+TEMPERATURE_TIMES = 16
+TEMPERATURE_REMOVE = 3
 
 # set up the pin plugged and declare the servo
 doorServo = Servo(PIN_NUM)
 doorServo.detach()
+
+
+
 # in servo motor,
 # 1ms pulse for 0 degree (LEFT)
 # 1.5ms pulse for 90 degree (MIDDLE)
@@ -53,10 +58,6 @@ def door_lock():
     doorServo.detach()
 
 
-def get_temperature():
-    current_tem = mlx.object_temperature
-    return current_tem
-
 def insertDb(id, name):
     now = datetime.now()
     time = now.strftime("%Y/%m/%d %H:%M:%S")
@@ -68,6 +69,23 @@ def insertDb(id, name):
         connection.commit()
 
 
+def avg_temperature():
+	obj_tem = []
+	avg_obj_tem = 0
+	
+	for i in range(0, TEMPERATURE_TIMES):
+		obj_tem.append(mlx.object_temperature)
+
+	sorted(obj_tem)
+
+	for k in range(TEMPERATURE_REMOVE, TEMPERATURE_TIMES - TEMPERATURE_REMOVE):
+		avg_obj_tem += obj_tem[k]
+		avg_amb_tem += amb_tem[k]
+		
+	avg_obj_tem = avg_obj_tem / (TEMPERATURE_TIMES - (TEMPERATURE_REMOVE*2))
+
+
+
 # main program
 TestFaceStatus = True
 while True:
@@ -76,16 +94,16 @@ while True:
     personId = "s1234567"
     personName = "Nguye Van A"
 
-    obj_tem = get_temperature()
+    obj_tem = avg_temperature()
 
     print("temperature = " + str(obj_tem))
 
-    if (face_recognition == True) and (obj_tem >= BASE_DEGREE):
+    if (face_recognition == True) and (obj_tem >= BASE_DEGREE): #remember to change condition when demo
         door_open()
         time.sleep(5)
         door_lock()
         time.sleep(2)
         insertDb(personId, personName)
 
-    time.sleep(0.5)
+    time.sleep(0.05)
 
