@@ -11,7 +11,7 @@ from datetime import datetime
 PIN_NUM = 17
 BASE_DEGREE = 37
 SERVO_FREQ = 50
-TEMPERATURE_TIMES = 26
+TEMPERATURE_TIMES = 16
 TEMPERATURE_REMOVE = 3
 
 # set up the pin plugged and declare the servo
@@ -78,7 +78,7 @@ def avg_temperature():
 
 	sorted(obj_tem)
 
-	for k in range(TEMPERATURE_REMOVE, TEMPERATURE_TIMES - TEMPERATURE_REMOVE - 1):
+	for k in range(TEMPERATURE_REMOVE, TEMPERATURE_TIMES - TEMPERATURE_REMOVE):
 		avg_obj_tem += obj_tem[k]
 		# avg_amb_tem += amb_tem[k]
 	avg_obj_tem = avg_obj_tem / (TEMPERATURE_TIMES - (TEMPERATURE_REMOVE*2))
@@ -103,5 +103,5 @@ while True:
         time.sleep(2)
         insertDb(personId, personName)
 
-    time.sleep(0.5)
+    time.sleep(0.05)
 
