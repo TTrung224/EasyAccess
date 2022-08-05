@@ -78,11 +78,11 @@ def avg_temperature():
 
 	sorted(obj_tem)
 
-	for k in range(TEMPERATURE_REMOVE, TEMPERATURE_TIMES - TEMPERATURE_REMOVE):
+	for k in range(TEMPERATURE_REMOVE, TEMPERATURE_TIMES - TEMPERATURE_REMOVE - 1):
 		avg_obj_tem += obj_tem[k]
 		# avg_amb_tem += amb_tem[k]
 	avg_obj_tem = avg_obj_tem / (TEMPERATURE_TIMES - (TEMPERATURE_REMOVE*2))
-    return avg_obj_tem
+	return avg_obj_tem
 
 # main program
 TestFaceStatus = True
