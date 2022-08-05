@@ -11,7 +11,7 @@ from datetime import datetime
 PIN_NUM = 17
 BASE_DEGREE = 37
 SERVO_FREQ = 50
-TEMPERATURE_TIMES = 16
+TEMPERATURE_TIMES = 26
 TEMPERATURE_REMOVE = 3
 
 # set up the pin plugged and declare the servo
@@ -101,7 +101,7 @@ while True:
         time.sleep(5)
         door_lock()
         time.sleep(2)
-        insertDb(personId, personName)
+        # insertDb(personId, personName)
 
-    time.sleep(0.05)
+    time.sleep(0.2)
 
