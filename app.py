@@ -1,7 +1,7 @@
 # import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-
+#Hellooo
 img = cv2.imread("images/amber-heard.png")
 # plt.figure(figsize=(6, 6))
 print(img.shape)
