@@ -61,7 +61,7 @@ while True:
     k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
     if k == 27:
         break
-    elif count >= 30:  # Take 30 face sample and stop the video
+    elif count >= 10:  # Take 30 face sample and stop the video
         break
 
 now = datetime.now()
