@@ -1,9 +1,9 @@
 """'
 Capture multiple Faces from multiple users to be stored on a DataBase (dataset directory)
 	==> Faces will be stored on a directory: dataset/ (if does not exist, pls create one)
-	==> Each face will have a unique numeric integer ID as 1, 2, 3, etc                       
+	==> Each face will have a unique numeric integer ID as 1, 2, 3, etc
 
-Based on original code by Anirban Kar: https://github.com/thecodacus/Face-Recognition    
+Based on original code by Anirban Kar: https://github.com/thecodacus/Face-Recognition
 
 Developed by ThgDoan
 """
@@ -16,7 +16,10 @@ cam = cv2.VideoCapture(0)
 cam.set(3, 640)  # set video width
 cam.set(4, 480)  # set video height
 
-face_detector = cv2.CascadeClassifier("Cascades/haarcascade_frontalface_default.xml")
+# face_detector = cv2.CascadeClassifier("Cascades/haarcascade_frontalface_default.xml")
+
+face_detector = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
 # For each person, enter one numeric face id
 face_id = input("\n enter user id ==>  ")
@@ -48,8 +51,9 @@ while True:
 
         # Save the captured image into the datasets folder
         cv2.imwrite(
-            "dataset/User." + str(face_id) + "." + str(count) + ".jpg",
-            gray[y : y + h, x : x + w],
+            "EasyAccess/dataset/User." +
+            str(face_id) + "." + str(count) + ".jpg",
+            gray[y: y + h, x: x + w],
         )
 
         cv2.imshow("image", img)
@@ -57,7 +61,7 @@ while True:
     k = cv2.waitKey(100) & 0xFF  # Press 'ESC' for exiting video
     if k == 27:
         break
-    elif count >= 10:  # Take 30 face sample and stop the video
+    elif count >= 30:  # Take 30 face sample and stop the video
         break
 
 now = datetime.now()
@@ -65,4 +69,3 @@ now = datetime.now()
 print("\n [INFO] [" + current_time() + "] Exiting Program and cleanup stuff")
 cam.release()
 cv2.destroyAllWindows()
-
