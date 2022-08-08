@@ -1,12 +1,26 @@
-from flask import Flask
+from urllib import response
+from flask import Flask, render_template, Response
+from camera import Video
 
 app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def index():
+    return render_template('index.html')
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield(b'--frame\r\n'
+        b'Content-Type: image/jpeg\r\n\r\n' + frame +
+         b'\r\n\r\n')
+
+@app.route('/video')
+
+def video():
+    return response(gen(video()),
+    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-if __name__ == '__main__':
-    app.run()
+app.run(debug=True)
