@@ -19,7 +19,7 @@ def gen(camera):
 @app.route('/video')
 
 def video():
-    return response(gen(video()),
+    return Response(gen(Video()),
     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
