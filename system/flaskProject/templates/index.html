@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <title>Easy Access</title>
 </head>
 <body>
-    
-    <h1 style="text-align: center; ">Easy Access</h1>
-    <div style="width:50px; "><img src="{{ url_for('video')}}" alt="camera"></div>
+    <h1 class="header" style="text-align: center; ">Easy Access</h1>
+    <div class="main-page-body">  
+        <div><img src="{{ url_for('recogVideo')}}" alt="camera"></div>
+        <div class="main-page-btn">
+            <a class="move-to-res-btn" href="/registration">Registration</a>
+            <a class="move-to-res-btn Expiration-btn" href="">Update Expiration</a>
+        </div>
+    </div>
     
 </body>
 </html>
