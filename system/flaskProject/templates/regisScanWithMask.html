@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
     <title>RegisScan With Mask</title>
 </head>
 <body>
-    <div><img src="{{ url_for('regisWithMaskVideo')}}" alt="camera"></div>
+    <div class="regis-scan-page">
+        <div><img src="{{ url_for('regisWithMaskVideo')}}" alt="camera"></div>
+        <div><a href="/" class="move-to-mask-res">Back to scan page</a></div>
+    </div>
+    
 </body>
 </html>
