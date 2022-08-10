@@ -41,33 +41,19 @@ import datetime
 
 
 
-subjects = {}
-# subjects = {'1': 'Bill Gates', '2': 'Mark zuckerberg', '3891724': ['Trung', datetime.datetime(2022, 8, 7, 21, 7, 4, 872629), '']}
-
-
-with open("labels.pickle", 'wb') as file:
-    pickle.dump(subjects, file)
-    file.close()
-
-
-with open('labels.pickle', 'rb') as file:
-    subjects = pickle.load(file)
-    file.close()
-
-print(subjects)
-
-
-
-# import cv2
-# # img = cv2.imread("test_data/test2.jpg")
-# # x, y = 0, 0
-# # h = 150
-# # w = 300
-# # crop_img = img[y:y+h, x:x+w]
-# # cv2.imshow("cropped", crop_img)
-# # cv2.waitKey(0)
+# subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 9, 23, 11, 31, 131780), datetime.date(2022, 8, 12)]}
+# # subjects = {'1': 'Bill Gates', '2': 'Mark zuckerberg', '3891724': ['Trung', datetime.datetime(2022, 8, 7, 21, 7, 4, 872629), '']}
 #
-# cap = cv2.VideoCapture(1)
-# ret, img = cap.read()
-# cap.release()
-# print(img.shape)
+#
+# with open("labels.pickle", 'wb') as file:
+#     pickle.dump(subjects, file)
+#     file.close()
+#
+#
+# with open('labels.pickle', 'rb') as file:
+#     subjects = pickle.load(file)
+#     file.close()
+#
+# print(subjects)
+
+

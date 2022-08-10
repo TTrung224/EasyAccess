@@ -131,7 +131,9 @@ def draw_rectangle(img, rect):
 # function to draw text on give image starting from
 # passed (x, y) coordinates.
 def draw_text(img, text, x, y):
-    cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
+    (w, h), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_PLAIN, 2.5, 3)
+    cv2.rectangle(img, (x, y), (x + w, y - (h+5)), (90, 90, 90), -1)
+    cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_PLAIN, 2.5, (25, 225, 25), 3)
 
 
 def predict(test_img, face_recogniser, subjects):
@@ -166,7 +168,6 @@ def predict(test_img, face_recogniser, subjects):
 def uidHandle(uid, type):
     try:
         int(uid[0])
-        return False
     except:
         uid = uid[1:]
 
@@ -183,7 +184,7 @@ def uidHandle(uid, type):
 
 def dateHandle(strDate):
     try:
-        date = datetime.strptime(strDate, "%d:%m:%Y").date()
+        date = datetime.strptime(strDate, "%Y-%m-%d").date()
         return date
     except:
         return None
