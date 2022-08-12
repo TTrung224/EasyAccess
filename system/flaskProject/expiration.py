@@ -6,7 +6,7 @@ import pickle
 import functions
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(BASE_DIR, "labels.pickle")
+file_path = os.path.join(BASE_DIR, "data/labels.pickle")
 # file_path = "expire_list.txt"
 
 
@@ -31,7 +31,7 @@ def set_expiration_time(id, expire_time):
     else:
         expire_time_ids[uid][2] = expire_time
 
-    with open("labels.pickle", 'wb') as file:
+    with open("data/labels.pickle", 'wb') as file:
         pickle.dump(expire_time_ids, file)
         file.close()
     return True

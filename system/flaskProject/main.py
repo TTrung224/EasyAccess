@@ -6,7 +6,8 @@ import pickle
 import imagezmq
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-dictionaryDir = os.path.join(BASE_DIR, "labels.pickle")
+dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
+trainerDir = os.path.join(BASE_DIR, "data/trainer.yml")
 
 # def recognise():
 #     with open(dictionaryDir, 'rb') as file:
@@ -59,7 +60,7 @@ def recognise(image_hub):
     # create our LBPH face recognizer
     face_recogniser = cv2.face.LBPHFaceRecognizer_create()
 
-    face_recogniser.read("trainer.yml")
+    face_recogniser.read(trainerDir)
     # face_recogniser = functions.train(face_recogniser)
     # cap = cv2.VideoCapture(1)
 

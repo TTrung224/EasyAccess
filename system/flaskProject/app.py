@@ -1,12 +1,16 @@
 from urllib import response
-from flask import Flask, render_template, Response, request, redirect, url_for
+from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
 import imagezmq
 import main
 import registration
+import json
+
+dict = {'status' : False, 'ID' : '', 'name' : ''}
 
 app = Flask(__name__)
 
 image_hub = imagezmq.ImageHub()
+
 
 @app.route('/')
 def index():
@@ -63,5 +67,37 @@ def regisScan():
 @app.route('/regisScanWithMask', methods=["GET"])
 def regisScanWithMask():
     return render_template('regisScanWithMask.html')
+
+
+@app.route('/status_send', methods = ['POST'])
+def status_send():
+    result = dict
+    return jsonify(result)
+
+
+@app.route('/reset_status', methods = ['POST', 'GET'])
+def reset_status():
+    dict['status'] = False
+    dict['ID'] = ''
+    dict['name'] = ''
+    return "reset done"
+
+
+#modify status when main program recognize faces
+@app.route('/modify_status', methods = ['POST'])
+def modify_status():
+    jsondata = request.get_json()
+    data = json.loads(jsondata)
+    dict['status'] = True
+    dict['ID'] = data['ID']
+    dict['name'] = data['name']
+    return "message received"
+
+
+#to check status sent from main program
+@app.route('/server_status_check', methods = ['POST'])
+def server_status_check():
+    return jsonify(dict)
+
 
 app.run(debug=True)

@@ -9,13 +9,13 @@ import expiration as expire
 import imagezmq
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 dataDir = os.path.join(BASE_DIR, "training_data")
-dictionaryDir = os.path.join(BASE_DIR, "labels.pickle")
+dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 imageNumber = 51
 adjustImageNumber = 10
 
 
 def checkExist(uid):
-    with open('labels.pickle', 'rb') as file:
+    with open('data/labels.pickle', 'rb') as file:
         subjects = pickle.load(file)
         file.close()
 
@@ -86,7 +86,7 @@ def registerGetInfo(id, name, type, expiration):
 
     subjects[uid] = [name, timeNow, expiration]
 
-    with open("labels.pickle", 'wb') as file:
+    with open("data/labels.pickle", 'wb') as file:
         pickle.dump(subjects, file)
         file.close()
     return uid
@@ -235,7 +235,6 @@ def registerMaskFace(uid, image_hub):
             count += 1
             functions.draw_text(img, str(count - 10), rect[0], rect[1] - 5)
 
-
         ret, jpg = cv2.imencode('.jpg', img)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpg.tobytes() +
@@ -245,7 +244,6 @@ def registerMaskFace(uid, image_hub):
             break
 
     # cap.release()
-
     face_recogniser = cv2.face.LBPHFaceRecognizer_create()
     functions.train(face_recogniser)
 

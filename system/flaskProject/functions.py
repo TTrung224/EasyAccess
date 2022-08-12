@@ -3,6 +3,8 @@ import os
 import numpy as np
 from datetime import date, datetime
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+trainerDir = os.path.join(BASE_DIR, "data/trainer.yml")
 
 # function to detect face using OpenCV
 def detect_face(img):
@@ -116,7 +118,7 @@ def train(recogniser):
     print(labels)
 
     recogniser.train(faces, np.array(labels))
-    recogniser.save("trainer.yml")
+    recogniser.save(trainerDir)
     return recogniser
 
 
