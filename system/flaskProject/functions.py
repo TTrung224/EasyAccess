@@ -156,7 +156,7 @@ def predict(test_img, face_recogniser, subjects):
             draw_text(img, "unknown", rect[0], rect[1] - 5)
         else:
             # get name of respective label returned by face recognizer
-            percent = "  {0}%".format(percent)
+            percent = "{0}%".format(percent)
             label_text = subjects[str(label)][0] + " - " + percent
 
             # draw a rectangle around face detected

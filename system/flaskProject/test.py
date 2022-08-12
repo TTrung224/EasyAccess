@@ -40,20 +40,20 @@ import datetime
 # cv2.destroyAllWindows()
 
 
-
+subjects = {}
 # subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 9, 23, 11, 31, 131780), datetime.date(2022, 8, 12)]}
 # # subjects = {'1': 'Bill Gates', '2': 'Mark zuckerberg', '3891724': ['Trung', datetime.datetime(2022, 8, 7, 21, 7, 4, 872629), '']}
 #
 #
-# with open("labels.pickle", 'wb') as file:
-#     pickle.dump(subjects, file)
-#     file.close()
-#
-#
-# with open('labels.pickle', 'rb') as file:
-#     subjects = pickle.load(file)
-#     file.close()
-#
-# print(subjects)
+with open("data/labels.pickle", 'wb') as file:
+    pickle.dump(subjects, file)
+    file.close()
+
+
+with open('data/labels.pickle', 'rb') as file:
+    subjects = pickle.load(file)
+    file.close()
+
+print(subjects)
 
 
