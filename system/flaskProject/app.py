@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 image_hub = imagezmq.ImageHub()
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
