@@ -64,5 +64,4 @@ def regisScan():
 def regisScanWithMask():
     return render_template('regisScanWithMask.html')
 
-
 app.run(debug=True)
