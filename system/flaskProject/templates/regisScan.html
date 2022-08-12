@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="regis-scan-page">
-        <div><img src="{{ url_for('regisVideo')}}" alt="camera"></div>
-        <div><a href="regisScanWithMask" class="move-to-mask-res">Register with mask</a></div>
+        <div><img src="{{ 'regisVideo?ID=' + request.args.get("ID")}}" alt="camera"></div>
+        <div><a href="{{"regisScanWithMask?ID=" + request.args.get("ID")}}" class="move-to-mask-res">Register with mask</a></div>
     </div>   
 </body>
 </html>

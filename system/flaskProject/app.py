@@ -1,44 +1,66 @@
 from urllib import response
-from flask import Flask, render_template, Response
-from camera import RecogVideo , RegisVideo, RegisWithMaskVideo
+from flask import Flask, render_template, Response, request, redirect, url_for
+import imagezmq
+import main
+import registration
 
 app = Flask(__name__)
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield(b'--frame\r\n'
-        b'Content-Type: image/jpeg\r\n\r\n' + frame +
-         b'\r\n\r\n')
+image_hub = imagezmq.ImageHub()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/recogVideo')
 def recogVideo():
-    return Response(gen(RecogVideo()),
+    return Response(main.recognise(image_hub),
     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/regisVideo')
+
+@app.route('/regisVideo', methods=["GET"])
 def regisVideo():
-    return Response(gen(RegisVideo()),
+    id = request.args.get("ID")
+    return Response(registration.registerNormalFace(id, image_hub),
     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/regisWithMaskVideo')
+
+@app.route('/regisWithMaskVideo', methods=["GET"])
 def regisWithMaskVideo():
-    return Response(gen(RegisWithMaskVideo()),
+    id = request.args.get("ID")
+    return Response(registration.registerMaskFace(id, image_hub),
     mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @app.route('/registration')
 def regisPage():
     return render_template('registration.html')
 
-@app.route('/regisScan')
+
+@app.route('/register', methods=["GET"])
+def register():
+    id = request.args.get("ID")
+    name = request.args.get("Name")
+    type = request.args.get("type")
+    expiration = request.args.get("expireDate")
+
+    case = registration.registerGetInfo(id, name, type, expiration)
+    if case == "wrong-id":
+        return redirect("registration?error=wrongId")
+    elif case == "existed":
+        return redirect("registration?error=existed")
+    elif case == "wrong-date":
+        return redirect("registration?error=wrongDate")
+    return redirect("regisScan?ID=" + case)
+
+
+@app.route('/regisScan', methods=["GET"])
 def regisScan():
     return render_template('regisScan.html')
 
-@app.route('/regisScanWithMask')
+
+@app.route('/regisScanWithMask', methods=["GET"])
 def regisScanWithMask():
     return render_template('regisScanWithMask.html')
 
