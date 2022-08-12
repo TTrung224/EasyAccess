@@ -2,31 +2,39 @@ import json
 from datetime import datetime
 from datetime import date
 import os
+import pickle
+import functions
 
-file_path = "expire_list.txt"
-
-f = open(file_path, "w+")
-if os.stat(file_path).st_size == 0:
-    json.dump({}, f)
-f.close()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(BASE_DIR, "labels.pickle")
+# file_path = "expire_list.txt"
 
 
-expire_time_ids = json.load(open(file_path))
+with open(file_path, 'rb') as file:
+    expire_time_ids = pickle.load(file)
+    file.close()
+
 date_format = "%d:%m:%Y"
 # input date is a datetime object
 
+# Function to update expire date of user
+def set_expiration_time(id, expire_time):
+    # process user id
+    uid = functions.uidHandle(id, type)
+    if uid is False:
+        print("wrong user id format")
+        return False
 
-def set_expiration_time(id, enter_time, expire_time):
-    if id not in expire_time_ids:
-        enter_time_str = enter_time.strftime(date_format)
-        expire_time_str = expire_time.strftime(date_format)
-        expire_time_ids[id] = "{}#{}".format(enter_time_str, expire_time_str)
+    if uid not in expire_time_ids:
+        print("id not exist")
+        return False
     else:
-        temp_str = expire_time_ids[id].split('#')
-        temp_str[1] = expire_time.strftime(date_format)
-        expire_time_ids[id] = "#".join(temp_str)
+        expire_time_ids[uid][2] = expire_time
 
-    json.dump(expire_time_ids, open("expire_list.txt", 'w'))
+    with open("labels.pickle", 'wb') as file:
+        pickle.dump(expire_time_ids, file)
+        file.close()
+    return True
 
 
 # this function return code for each case:
@@ -36,15 +44,22 @@ def set_expiration_time(id, enter_time, expire_time):
 
 # *may include return time to expire date
 def check_expire(id):
+    # process user id
+    uid = functions.uidHandle(id, type)
+    if uid is False:
+        print("wrong user id format")
+        return None
 
-    if id not in expire_time_ids:
+    if uid not in expire_time_ids:
         return "0000"
     else:
-        expire_time_str = (expire_time_ids[id].split('#'))[1]
-        expire_time = datetime.strptime(expire_time_str, date_format)
-        today = datetime.strptime(datetime.strftime(
-            date.today(), date_format), date_format)
+        expire_time = expire_time_ids[uid][2]
+        today = date.today()
         if today > expire_time:
             return "0010"
         else:
             return "1"
+
+# expire_time = datetime.strptime("09:08:2022", "%d:%m:%Y").date()
+# set_expiration_time("3891724", expire_time)
+# print(check_expire("3891724"))

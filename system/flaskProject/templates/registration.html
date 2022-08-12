@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <title>Registration</title>
+</head>
+<body>
+    <div class="full-page">
+        <h2>Add Personnel</h2>
+        <form action="register" method="Get" class="regis-form">
+            <label for="personID">Person ID</label>
+            <input type="text" id="personID" name="ID" required>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="Name" required>
+            <label for="type">Type</label>
+            <select name="type" id="type" required>
+                <option value="" disabled selected>Choose user type</option>
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+                <option value="visitor">Visitor</option>
+            </select>
+            <label for="exp-day">Expiration Date</label>
+            <input type="date" id="exp-day" name="expireDate" required>
+            <input type="submit" placeholder="Register" class="submit-btn">
+        </form>
+        <div><a href="/" class="move-to-mask-res">Back to scan page</a></div>
+
+    </div>
+</body>
+</html>
