@@ -1,19 +1,165 @@
-import time
 import cv2
-import numpy
 import os
-import functions
+
+import numpy as np
+
+from functions import detect_face, draw_text
 import pickle
-from datetime import datetime, date, timedelta
-import expiration as expire
-import imagezmq
+from datetime import datetime, timedelta
+
+# directories of the system files
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-dataDir = os.path.join(BASE_DIR, "training_data")
+fullFaceTrainingDataDir = os.path.join(BASE_DIR, "fullFace_training_data")
+upperFaceTrainingDataDir = os.path.join(BASE_DIR, "upperFace_training_data")
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
-imageNumber = 51
-adjustImageNumber = 10
+fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
+upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
+
+# number of training image per person
+realImageNumber = 200
+imageNumber = realImageNumber + 1
+
+# number of loops before taking training image
+adjustImageNumber = 20
+
+upperFaceRatio = 0.5
+
+# function to train the fullFace recogniser
+def trainFullFace(uid):
+    print("full face train:")
+    print("Preparing data...")
+
+    # list to hold all subject faces
+    faces = []
+    # list to hold labels for all subjects
+    labels = []
+
+    userDir = fullFaceTrainingDataDir + "/" + uid
+
+    label = int(uid)
+
+    # get the images names that are inside the given subject directory
+    subject_images_names = os.listdir(userDir)
+
+    # go through each image name, read image,
+    # detect face and add face to list of faces
+    for image_name in subject_images_names:
+
+        # ignore system files like .DS_Store
+        if image_name.startswith("."):
+            continue
+
+        # build image path
+        image_path = userDir + "/" + image_name
+
+        # read image
+        image = cv2.imread(image_path)
+
+        # detect face
+        face, rect = detect_face(image)
+
+        if face is not None:
+            # add face to list of faces
+            faces.append(face)
+            # add label for this face
+            labels.append(label)
+
+    print("Data prepared")
+    # print total faces and labels
+    print("Total faces: ", len(faces))
+    print("Total labels: ", len(labels))
+
+    recogniser = cv2.face.LBPHFaceRecognizer_create()
+    if os.path.exists(fullFaceTrainerDir):
+        recogniser.read(fullFaceTrainerDir)
+        recogniser.update(faces, np.array(labels))
+        recogniser.save(fullFaceTrainerDir)
+    else:
+        recogniser.train(faces, np.array(labels))
+        recogniser.save(fullFaceTrainerDir)
+    print("Train fullFace successfully")
 
 
+# function to train the upperFace recogniser
+def trainUpperFace(uid):
+    print("upper face train:")
+    print("Preparing data...")
+
+    # list to hold all subject faces
+    faces = []
+    # list to hold labels for all subjects
+    labels = []
+
+    userDir = upperFaceTrainingDataDir + "/" + uid
+
+    label = int(uid)
+
+    # get the images names that are inside the given subject directory
+    subject_images_names = os.listdir(userDir)
+
+    # go through each image name, read image,
+    # detect face and add face to list of faces
+    for image_name in subject_images_names:
+
+        # ignore system files like .DS_Store
+        if image_name.startswith("."):
+            continue
+
+        # build image path
+        image_path = userDir + "/" + image_name
+
+        # read image
+        image = cv2.imread(image_path)
+
+        # add face to list of faces
+        faces.append(image)
+        # add label for this face
+        labels.append(label)
+
+    print("Data prepared")
+    # print total faces and labels
+    print("Total faces: ", len(faces))
+    print("Total labels: ", len(labels))
+
+    recogniser = cv2.face.LBPHFaceRecognizer_create()
+    if os.path.exists(upperFaceTrainerDir):
+        recogniser.read(upperFaceTrainerDir)
+        recogniser.update(faces, np.array(labels))
+        recogniser.save(upperFaceTrainerDir)
+    else:
+        recogniser.train(faces, np.array(labels))
+        recogniser.save(upperFaceTrainerDir)
+    print("Train fullFace successfully")
+
+
+# function to handle the user id input
+def uidHandle(uid, type):
+    try:
+        int(uid[0])
+    except:
+        uid = uid[1:]
+
+    if type == "student":
+        uid = "1" + uid
+    elif type == "staff":
+        uid = "2" + uid
+    elif type == "visitor":
+        uid = "3" + uid
+    else:
+        return False
+    return uid
+
+
+# function to handle the user string date input
+def dateHandle(strDate):
+    try:
+        date = datetime.strptime(strDate, "%Y-%m-%d").date()
+        return date
+    except:
+        return None
+
+
+# function to check the existence of an user id
 def checkExist(uid):
     with open('data/labels.pickle', 'rb') as file:
         subjects = pickle.load(file)
@@ -25,7 +171,7 @@ def checkExist(uid):
     return False
 
 
-# function to detect face
+# function to get training face image
 def getFaceImg(img):
     # convert the test image to gray scale as opencv face detector expects gray images
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -58,10 +204,37 @@ def getFaceImg(img):
     return grayImg[y:y + w, x:x + h], faces[0]
 
 
+# function to get training upper part face image
+def getUpperFaceImg(img):
+    # convert the test image to gray scale as opencv face detector expects gray images
+    grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # load OpenCV face detector
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+
+    # detect multiscale images
+    # result is a list of faces
+    faces = face_cascade.detectMultiScale(grayImg, scaleFactor=1.1, minNeighbors=5)
+
+    for x, y, w, h in faces:
+        height = round(upperFaceRatio * h)
+        cv2.rectangle(img, (x, y), (x + w, y + height), (0, 255, 0), 5)
+
+    # if no faces are detected then return None
+    if (len(faces) == 0):
+        return None, None
+
+    # extract the face area
+    (x, y, w, h) = faces[0]
+
+    # return the upper face part of the image
+    return grayImg[y:y + round(upperFaceRatio * w), x:x + h], faces[0]
+
+
 # function to write user data into pickle file
 def registerGetInfo(id, name, type, expiration):
     # process user id
-    uid = functions.uidHandle(id, type)
+    uid = uidHandle(id, type)
     if uid is False:
         print("wrong user id format")
         return "wrong-id"
@@ -70,7 +243,7 @@ def registerGetInfo(id, name, type, expiration):
         print("ID existed")
         return "existed"
 
-    expiration = functions.dateHandle(expiration)
+    expiration = dateHandle(expiration)
     if expiration is None:
         print("wrong date format")
         return "wrong-date"
@@ -92,44 +265,13 @@ def registerGetInfo(id, name, type, expiration):
     return uid
 
 
-# # function to capture user face without mask
-# def registerNormalFace(uid):
-#     cap = cv2.VideoCapture(1)
-#     userDataDir = dataDir + "/" + uid
-#     os.mkdir(userDataDir)
-#
-#     count = 1
-#     while True:
-#         ret, img = cap.read()
-#         face, rect = getFaceImg(img)
-#         cv2.imshow('webcam', img)
-#         cv2.waitKey(1)
-#
-#         # First ten loops is for adjusting position
-#         if count < (adjustImageNumber + 1):
-#             time.sleep(0.1)
-#             print("1 - " + str(count))
-#             count += 1
-#             continue
-#
-#         # Save face images
-#         if face is not None:
-#             print("2 - " + str(count))
-#             cv2.imwrite(
-#                 userDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
-#                 face
-#             )
-#             count += 1
-#
-#         if count == imageNumber + adjustImageNumber:
-#             break
-#     cap.release()
-
 # function to capture user face without mask
-def registerNormalFace(uid, image_hub):
+def registerFace(uid, image_hub):
     # cap = cv2.VideoCapture(1)
-    userDataDir = dataDir + "/" + uid
-    os.mkdir(userDataDir)
+    userFullFaceDataDir = fullFaceTrainingDataDir + "/" + uid
+    os.mkdir(userFullFaceDataDir)
+    userUpperFaceDataDir = upperFaceTrainingDataDir + "/" + uid
+    os.mkdir(userUpperFaceDataDir)
 
     count = 1
     while True:
@@ -137,24 +279,30 @@ def registerNormalFace(uid, image_hub):
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
         image_hub.send_reply(b'OK')
-        face, rect = getFaceImg(img)
 
-        # First ten loops is for adjusting position
+        face, rect = getFaceImg(img)
+        upperFace, upperRect = getUpperFaceImg(img)
+
+        # First loops is for adjusting position
         if count < (adjustImageNumber + 1):
-            print("1 - " + str(count))
+            # print("1 - " + str(count))
             count += 1
             flag = False
 
-
-        # Save face images
-        if face is not None and flag is True:
-            print("2 - " + str(count))
+        # Save fullFace and upperFace images
+        if face is not None and upperFace is not None and flag is True:
+            # print("2 - " + str(count))
             cv2.imwrite(
-                userDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
+                userFullFaceDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
                 face
             )
+            cv2.imwrite(
+                userUpperFaceDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
+                upperFace
+            )
             count += 1
-            functions.draw_text(img, str(count - 10), rect[0], rect[1] - 5)
+            finishPercent = round((count - adjustImageNumber) / imageNumber)
+            draw_text(img, str(finishPercent) + "%", rect[0], rect[1] - 5)
 
         ret, jpg = cv2.imencode('.jpg', img)
         yield (b'--frame\r\n'
@@ -163,89 +311,10 @@ def registerNormalFace(uid, image_hub):
 
         if count == imageNumber + adjustImageNumber:
             break
-    # cap.release()
-
-
-# # function to capture user face with mask
-# def registerMaskFace(uid):
-#     cap = cv2.VideoCapture(1)
-#     userDataDir = dataDir + "/" + uid
-#
-#     count = imageNumber
-#     while True:
-#         ret, img = cap.read()
-#         face, rect = getFaceImg(img)
-#         cv2.imshow('webcam', img)
-#         cv2.waitKey(1)
-#
-#         # First ten loops is for adjusting position
-#         if count < (adjustImageNumber + 1):
-#             time.sleep(0.5)
-#             print("1 - " + str(count))
-#             count += 1
-#             continue
-#
-#         # Save face images
-#         if face is not None:
-#             print("2 - " + str(count))
-#
-#             cv2.imwrite(
-#                 userDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
-#                 face
-#             )
-#             count += 1
-#
-#
-#         if count == imageNumber * 2 - 1 + adjustImageNumber:
-#             break
-#
-#     cap.release()
-#
-#     face_recogniser = cv2.face.LBPHFaceRecognizer_create()
-#     functions.train(face_recogniser)
-
-
-# function to capture user face with mask
-def registerMaskFace(uid, image_hub):
-    # cap = cv2.VideoCapture(1)
-    userDataDir = dataDir + "/" + uid
-
-    count = imageNumber
-    while True:
-        flag = True
-        # ret, img = cap.read()
-        rpi_name, img = image_hub.recv_image()
-        image_hub.send_reply(b'OK')
-        face, rect = getFaceImg(img)
-
-        # First ten loops is for adjusting position
-        if count < (imageNumber + adjustImageNumber):
-            print("1 - " + str(count))
-            count += 1
-            flag = False
-
-        # Save face images
-        if face is not None and flag is True:
-            print("2 - " + str(count))
-
-            cv2.imwrite(
-                userDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
-                face
-            )
-            count += 1
-            functions.draw_text(img, str(count - 10), rect[0], rect[1] - 5)
-
-        ret, jpg = cv2.imencode('.jpg', img)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + jpg.tobytes() +
-               b'\r\n\r\n')
-
-        if count == imageNumber * 2 - 1 + adjustImageNumber:
-            break
 
     # cap.release()
-    face_recogniser = cv2.face.LBPHFaceRecognizer_create()
-    functions.train(face_recogniser)
+    trainFullFace(uid)
+    trainUpperFace(uid)
 
 
 # def register(id, name, type, expiration):
