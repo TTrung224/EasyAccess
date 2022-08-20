@@ -5,10 +5,13 @@ from functions import draw_text, draw_rectangle, detect_face
 import pickle
 import imagezmq
 from registration import detect_face
+import detect_mask_video
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
+upperfaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
 
 
 # function to predict the person label
@@ -50,8 +53,9 @@ def recognise(image_hub):
 
     # create our LBPH face recognizer
     face_recogniser = cv2.face.LBPHFaceRecognizer_create()
-
+    face_recogniser2 = cv2.face.LBPHFaceRecognizer_create()
     face_recogniser.read(fullFaceTrainerDir)
+    face_recogniser2.read(upperFaceTrainerDir)
     # face_recogniser = functions.train(face_recogniser)
     # cap = cv2.VideoCapture(1)
 
@@ -59,8 +63,16 @@ def recognise(image_hub):
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
         image_hub.send_reply(b'OK')
-        img = predict(img, face_recogniser, subjects)
-        ret, jpg = cv2.imencode('.jpg', img)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + jpg.tobytes() +
-               b'\r\n\r\n')
+        detect_result = detect_mask_video.mask_detector(img)
+        if detect_result == True:
+            img = predict(img, face_recogniser2, subjects)
+            ret, jpg = cv2.imencode('.jpg', img)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + jpg.tobytes() +
+                   b'\r\n\r\n')
+        else:
+            img = predict(img, face_recogniser, subjects)
+            ret, jpg = cv2.imencode('.jpg', img)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + jpg.tobytes() +
+                   b'\r\n\r\n')

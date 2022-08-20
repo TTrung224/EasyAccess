@@ -25,6 +25,8 @@ adjustImageNumber = 20
 upperFaceRatio = 0.5
 
 # function to train the fullFace recogniser
+
+
 def trainFullFace(uid):
     print("full face train:")
     print("Preparing data...")
@@ -129,7 +131,7 @@ def trainUpperFace(uid):
     else:
         recogniser.train(faces, np.array(labels))
         recogniser.save(upperFaceTrainerDir)
-    print("Train fullFace successfully")
+    print("Train upperFace successfully")
 
 
 # function to handle the user id input
@@ -177,11 +179,13 @@ def getFaceImg(img):
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # load OpenCV face detector
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    face_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
     # detect multiscale images
     # result is a list of faces
-    faces = face_cascade.detectMultiScale(grayImg, scaleFactor=1.1, minNeighbors=5)
+    faces = face_cascade.detectMultiScale(
+        grayImg, scaleFactor=1.1, minNeighbors=5)
 
     for x, y, w, h in faces:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
@@ -210,11 +214,13 @@ def getUpperFaceImg(img):
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # load OpenCV face detector
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    face_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
     # detect multiscale images
     # result is a list of faces
-    faces = face_cascade.detectMultiScale(grayImg, scaleFactor=1.1, minNeighbors=5)
+    faces = face_cascade.detectMultiScale(
+        grayImg, scaleFactor=1.1, minNeighbors=5)
 
     for x, y, w, h in faces:
         height = round(upperFaceRatio * h)
@@ -293,11 +299,13 @@ def registerFace(uid, image_hub):
         if face is not None and upperFace is not None and flag is True:
             # print("2 - " + str(count))
             cv2.imwrite(
-                userFullFaceDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
+                userFullFaceDataDir + "/" + uid + "_" +
+                str(count - adjustImageNumber) + ".jpg",
                 face
             )
             cv2.imwrite(
-                userUpperFaceDataDir + "/" + uid + "_" + str(count - adjustImageNumber) + ".jpg",
+                userUpperFaceDataDir + "/" + uid + "_" +
+                str(count - adjustImageNumber) + ".jpg",
                 upperFace
             )
             count += 1
