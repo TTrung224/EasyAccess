@@ -8,6 +8,10 @@ from datetime import datetime
 from flask import Flask, request
 import json
 import requests
+
+# address of the server
+baseAddress = 'http://192.168.0.2:5000'
+
 # all constant parameter goes here
 PIN_NUM = 17
 BASE_DEGREE = 37
@@ -92,14 +96,15 @@ def avg_temperature():
 
 # main program
 TestFaceStatus = False
-server_address = 'http://192.168.0.2:5000/status_send'
-server_reset_address = 'http://192.168.0.2:5000/reset_status'
+server_address = baseAddress + '/status_send'
+server_reset_address = baseAddress + '/reset_status'
 
 while True:
     try:
         respond = requests.post(server_address, json={"mytext":"lalala"})
         if respond.ok:
             print(respond.json())
+            respond = respond.json()
             TestFaceStatus = respond['status']
         time.sleep(.2)
         

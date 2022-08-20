@@ -44,14 +44,14 @@ import datetime
 
 """****************"""
 
-# subjects = {}
+# # subjectsbjects = {}
 # # subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 9, 23, 11, 31, 131780), datetime.date(2022, 8, 12)]}
 # # subjects = {'1': 'Bill Gates', '2': 'Mark zuckerberg', '3891724': ['Trung', datetime.datetime(2022, 8, 7, 21, 7, 4, 872629), '']}
+# subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 16, 9, 41, 26, 497436), datetime.date(2022, 8, 18)], '13877653': ['Khoi', datetime.datetime(2022, 8, 16, 9, 43, 15, 683267), datetime.date(2022, 8, 18)], '13852304': ['Thong', datetime.datetime(2022, 8, 16, 9, 45, 20, 128046), datetime.date(2022, 8, 18)], '13878281': ['Dung', datetime.datetime(2022, 8, 16, 9, 47, 55, 799150), datetime.date(2022, 8, 24)]}
 #
-#
-# # with open("data/labels.pickle", 'wb') as file:
-# #     pickle.dump(subjects, file)
-# #     file.close()
+# with open("data/labels.pickle", 'wb') as file:
+#     pickle.dump(subjects, file)
+#     file.close()
 #
 #
 # with open('data/labels.pickle', 'rb') as file:
@@ -168,6 +168,8 @@ def retrainUpper():
 
             # read image
             image = cv2.imread(image_path)
+            print(image.dtype)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
             # add face to list of faces
             faces.append(image)

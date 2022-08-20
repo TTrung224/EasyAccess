@@ -112,9 +112,10 @@ def trainUpperFace(uid):
 
         # read image
         image = cv2.imread(image_path)
+        img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         # add face to list of faces
-        faces.append(image)
+        faces.append(img)
         # add label for this face
         labels.append(label)
 
@@ -284,6 +285,8 @@ def registerFace(uid, image_hub):
         flag = True
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
+        if img is None:
+            continue
         image_hub.send_reply(b'OK')
 
         face, rect = getFaceImg(img)
@@ -309,7 +312,7 @@ def registerFace(uid, image_hub):
                 upperFace
             )
             count += 1
-            finishPercent = round((count - adjustImageNumber) / imageNumber)
+            finishPercent = round((count - adjustImageNumber) / imageNumber * 100)
             draw_text(img, str(finishPercent) + "%", rect[0], rect[1] - 5)
 
         ret, jpg = cv2.imencode('.jpg', img)

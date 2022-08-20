@@ -5,7 +5,7 @@ import recognise
 import registration
 import json
 
-dict = {'status' : False, 'ID' : '', 'name' : ''}
+dict = {'status': False, 'ID': '', 'name': ''}
 
 app = Flask(__name__)
 
@@ -20,14 +20,14 @@ def index():
 @app.route('/recogVideo')
 def recogVideo():
     return Response(recognise.recognise(image_hub),
-        mimetype='multipart/x-mixed-replace; boundary=frame')
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/regisVideo', methods=["GET"])
 def regisVideo():
     id = request.args.get("ID")
     return Response(registration.registerFace(id, image_hub),
-        mimetype='multipart/x-mixed-replace; boundary=frame')
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # @app.route('/regisWithMaskVideo', methods=["GET"])
@@ -69,13 +69,13 @@ def regisScan():
 #     return render_template('regisScanWithMask.html')
 
 
-@app.route('/status_send', methods = ['POST'])
+@app.route('/status_send', methods=['POST'])
 def status_send():
     result = dict
     return jsonify(result)
 
 
-@app.route('/reset_status', methods = ['POST', 'GET'])
+@app.route('/reset_status', methods=['POST', 'GET'])
 def reset_status():
     dict['status'] = False
     dict['ID'] = ''
@@ -83,8 +83,8 @@ def reset_status():
     return "reset done"
 
 
-#modify status when main program recognize faces
-@app.route('/modify_status', methods = ['POST'])
+# modify status when main program recognize faces
+@app.route('/modify_status', methods=['POST'])
 def modify_status():
     jsondata = request.get_json()
     data = json.loads(jsondata)
@@ -94,10 +94,11 @@ def modify_status():
     return "message received"
 
 
-#to check status sent from main program
-@app.route('/server_status_check', methods = ['POST'])
+# to check status sent from main program
+@app.route('/server_status_check', methods=['POST'])
 def server_status_check():
     return jsonify(dict)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

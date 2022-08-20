@@ -15,8 +15,8 @@ with open(file_path, 'rb') as file:
     file.close()
 
 date_format = "%d:%m:%Y"
-# input date is a datetime object
 
+# input date is a datetime object
 # Function to update expire date of user
 def set_expiration_time(id, expire_time):
     # process user id

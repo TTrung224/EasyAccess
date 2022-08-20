@@ -1,20 +1,31 @@
 import cv2
-import numpy as np
 import os
 from functions import draw_text, draw_rectangle, detect_face
 import pickle
-import imagezmq
 from registration import detect_face
 import detect_mask_video
+import requests
+import json
+from keras.models import load_model
 
+server_address = 'http://127.0.0.1:5000/modify_status'
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
-upperfaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
+upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
 
 
+prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
+weightsPath = os.path.join(
+    BASE_DIR, "face_detector/res10_300x300_ssd_iter_140000.caffemodel")
+faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+
+# load the face mask detector model from disk
+maskNet = load_model("mask_detector.model")
 # function to predict the person label
+
+
 def predict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
@@ -36,7 +47,13 @@ def predict(test_img, face_recogniser, subjects):
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
             label_text = subjects[str(label)][0] + " - " + percent
-
+            dict_holder = {"status": True, "ID": str(
+                label), "name": subjects[str(label)][0]}
+            try:
+                s = requests.post(
+                    server_address, json=json.dumps(dict_holder)).content
+            except Exception:
+                pass
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
@@ -63,7 +80,7 @@ def recognise(image_hub):
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
         image_hub.send_reply(b'OK')
-        detect_result = detect_mask_video.mask_detector(img)
+        detect_result = detect_mask_video.mask_detector(img, faceNet, maskNet)
         if detect_result == True:
             img = predict(img, face_recogniser2, subjects)
             ret, jpg = cv2.imencode('.jpg', img)

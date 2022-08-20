@@ -1,8 +1,6 @@
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model
-from imutils.video import VideoStream
 import numpy as np
 import cv2
 
@@ -17,7 +15,6 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     # pass the blob through the network and obtain the face detections
     faceNet.setInput(blob)
     detections = faceNet.forward()
-    print(detections.shape)
 
     # initialize our list of faces, their corresponding locations,
     # and the list of predictions from our face mask network
@@ -69,18 +66,9 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     return preds
 
 
-def mask_detector(frame):
-
-    # load our serialized face detector model from disk
-    prototxtPath = r"face_detector\deploy.prototxt"
-    weightsPath = r"face_detector\res10_300x300_ssd_iter_140000.caffemodel"
-    faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
-
-    # load the face mask detector model from disk
-    maskNet = load_model("mask_detector.model")
-
+def mask_detector(frame, faceNet, maskNet):
     preds = detect_and_predict_mask(frame, faceNet, maskNet)
-
+    label = ""
     # loop over the detected face locations and their corresponding
     # locations
     for pred in preds:
