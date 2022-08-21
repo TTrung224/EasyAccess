@@ -11,21 +11,23 @@
 <body>
     <div class="full-page">
         <h2>Add Personnel</h2>
-        <form action="regisScan" method="Get" class="regis-form">
+        <form action="register" method="Get" class="regis-form">
             <label for="personID">Person ID</label>
-            <input type="text" id="personID" name="ID">
+            <input type="text" id="personID" name="ID" required>
             <label for="name">Name</label>
-            <input type="text" id="name" name="Name">
+            <input type="text" id="name" name="Name" required>
             <label for="type">Type</label>
-            <select name="type[]" id="type" onclick="ShowAndHide()" >
+            <select name="type" id="type" required>
+                <option value="" disabled selected>Choose user type</option>
                 <option value="student">Student</option>
                 <option value="staff">Staff</option>
-                <option value="visitor">Visit</option>
+                <option value="visitor">Visitor</option>
             </select>
             <label for="exp-day">Expiration Date</label>
-            <input type="date" id="exp-day">
+            <input type="date" id="exp-day" name="expireDate" required>
             <input type="submit" placeholder="Register" class="submit-btn">
         </form>
+        <div><a href="/" class="move-to-mask-res">Back to scan page</a></div>
     </div>
     <script type="text/javascript" src="{{url_for('static',filename='script.js')}}"></script>
    
