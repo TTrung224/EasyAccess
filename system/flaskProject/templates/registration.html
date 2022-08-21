@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    
     <title>Registration</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
             <label for="name">Name</label>
             <input type="text" id="name" name="Name">
             <label for="type">Type</label>
-            <select name="type[]" id="type">
+            <select name="type[]" id="type" onclick="ShowAndHide()" >
                 <option value="student">Student</option>
                 <option value="staff">Staff</option>
                 <option value="visitor">Visit</option>
@@ -26,5 +27,7 @@
             <input type="submit" placeholder="Register" class="submit-btn">
         </form>
     </div>
+    <script type="text/javascript" src="{{url_for('static',filename='script.js')}}"></script>
+   
 </body>
 </html>
