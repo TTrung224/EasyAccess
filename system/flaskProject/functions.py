@@ -1,13 +1,19 @@
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 import os
 import numpy as np
 from datetime import date, datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-trainingDataDir = os.path.join(BASE_DIR, "fullFace_training_data")
-
+prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
+weightsPath = os.path.join(
+    BASE_DIR, "face_detector/res10_300x300_ssd_iter_140000.caffemodel")
+faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # function to draw a rectangle around an object
+
+
 def draw_rectangle(img, rect):
     (x, y, w, h) = rect
     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -22,33 +28,33 @@ def draw_text(img, text, x, y):
 
 
 # function to detect existence of people face
-def detect_face(img):
-    # convert the test image to gray scale as opencv face detector expects gray images
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# def detect_face(img):
+#     # convert the test image to gray scale as opencv face detector expects gray images
+#     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # load OpenCV face detector
-    face_cascade = cv2.CascadeClassifier(
-        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+#     # load OpenCV face detector
+#     face_cascade = cv2.CascadeClassifier(
+#         cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
-    faces = face_cascade.detectMultiScale(
-        gray, scaleFactor=1.1, minNeighbors=5)
+#     faces = face_cascade.detectMultiScale(
+#         gray, scaleFactor=1.1, minNeighbors=5)
 
-    # for x, y, w, h in faces:
-    #     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
+#     # for x, y, w, h in faces:
+#     #     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
 
-    # if no faces are detected then return original img
-    if (len(faces) == 0):
-        return None, None
+#     # if no faces are detected then return original img
+#     if (len(faces) == 0):
+#         return None, None
 
-    # under the assumption that there will be only one face,
-    # extract the face area
-    (x, y, w, h) = faces[0]
+#     # under the assumption that there will be only one face,
+#     # extract the face area
+#     (x, y, w, h) = faces[0]
 
-    # return only the face part of the image
-    return gray[y:y + w, x:x + h], faces[0]
+#     # return only the face part of the image
+#     return gray[y:y + w, x:x + h], faces[0]
 
 
-def detect_face2(frame, faceNet):
+def detect_face(frame, faceNet):
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
@@ -62,9 +68,6 @@ def detect_face2(frame, faceNet):
 
     # initialize our list of faces, their corresponding locations,
     # and the list of predictions from our face mask network
-    faces = []
-    locs = []
-    preds = []
 
     # loop over the detections
     for i in range(0, detections.shape[2]):
@@ -89,22 +92,15 @@ def detect_face2(frame, faceNet):
             # ordering, resize it to 224x224, and preprocess it
             face = frame[startY:endY, startX:endX]
             face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-            face = cv2.resize(face, (224, 224))
-            face = img_to_array(face)
-            face = preprocess_input(face)
+            # face = cv2.resize(face, (224, 224))
+            # face = img_to_array(face)
+            # face = preprocess_input(face)
 
             # add the face and bounding boxes to their respective
             # lists
-            faces.append(face)
-
-    # only make a predictions if at least one face was detected
-    if len(faces) > 0:
-        # for faster inference we'll make batch predictions on *all*
-        # faces at the same time rather than one-by-one predictions
-        # in the above `for` loop
-        faces = np.array(faces, dtype="float32")
-        preds = maskNet.predict(faces, batch_size=32)
+            # faces.append(face)
+            # locs.append((startX, startY, endX, endY))
 
     # return a 2-tuple of the face locations and their corresponding
     # locations
-    return preds
+    return face, (startX, startY, w, h)
