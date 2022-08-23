@@ -284,9 +284,12 @@ def registerFace(uid, image_hub):
     while True:
         flag = True
         # ret, img = cap.read()
-        rpi_name, img = image_hub.recv_image()
-        image_hub.send_reply(b'OK')
-        if img is None:
+        try:
+            rpi_name, img = image_hub.recv_image()
+            image_hub.send_reply(b'OK')
+            if img is None:
+                continue
+        except Exception:
             continue
 
         face, rect = getFaceImg(img)

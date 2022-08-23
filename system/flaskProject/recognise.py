@@ -5,7 +5,7 @@ import pickle
 import detect_mask_video
 import requests
 import json
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from registration import getUpperFaceImg
 
 server_address = 'http://127.0.0.1:5000/modify_status'
@@ -23,9 +23,9 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the face mask detector model from disk
 maskNet = load_model("mask_detector.model")
+
+
 # function to predict the person label
-
-
 def predict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
@@ -114,9 +114,12 @@ def recognise(image_hub):
 
     while True:
         # ret, img = cap.read()
-        rpi_name, img = image_hub.recv_image()
-        image_hub.send_reply(b'OK')
-        if img is None:
+        try:
+            rpi_name, img = image_hub.recv_image()
+            image_hub.send_reply(b'OK')
+            if img is None:
+                continue
+        except Exception:
             continue
 
         detect_result = detect_mask_video.mask_detector(img, faceNet, maskNet)
