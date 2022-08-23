@@ -5,15 +5,8 @@ import os
 import numpy as np
 from datetime import date, datetime
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
-weightsPath = os.path.join(
-    BASE_DIR, "face_detector/res10_300x300_ssd_iter_140000.caffemodel")
-faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # function to draw a rectangle around an object
-
-
 def draw_rectangle(img, rect):
     (x, y, w, h) = rect
     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -103,4 +96,4 @@ def detect_face(frame, faceNet):
 
     # return a 2-tuple of the face locations and their corresponding
     # locations
-    return face, (startX, startY, w, h)
+    return face, (startX, startY, endX, endY)

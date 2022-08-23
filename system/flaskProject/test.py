@@ -207,7 +207,7 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 # load the face mask detector model from disk
 maskNet = load_model("mask_detector.model")
 
-def detect_and_predict_mask(frame, faceNet, maskNet):
+def face_detect(frame, faceNet, maskNet):
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -272,3 +272,16 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     # return a 2-tuple of the face locations and their corresponding
     # locations
     return gray[y:y + w, x:x + h], faces[0]
+
+cap = cv2.VideoCapture(1)
+
+while True:
+    ret, image = cap.read()
+    try:
+        face, rect = face_detect(image, faceNet, maskNet)
+        (x, y, w, h) = rect
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    except:
+        pass
+    cv2.imshow('webcam', image)
+    cv2.waitKey(1)
