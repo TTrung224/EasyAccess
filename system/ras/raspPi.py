@@ -24,7 +24,6 @@ doorServo = Servo(PIN_NUM)
 doorServo.detach()
 
 
-
 # in servo motor,
 # 1ms pulse for 0 degree (LEFT)
 # 1.5ms pulse for 90 degree (MIDDLE)
@@ -36,7 +35,7 @@ doorServo.detach()
 # duty cycle for 180 degree = (2/20)*100 = 10%
 #left_position = 0.40
 #right_position = 2.5
-#middle_position = (right_position - left_position) / 2 + left_position  # set the servo back to 0 degree
+# middle_position = (right_position - left_position) / 2 + left_position  # set the servo back to 0 degree
 #ms_per_cycle = 1000 / SERVO_FREQ
 # setup i2c port and mlx sensor
 
@@ -50,12 +49,13 @@ connection = pymysql.connect(host='us-cdbr-east-06.cleardb.net',
                              database='heroku_a0c3ccec1186e2e',
                              cursorclass=pymysql.cursors.DictCursor)
 
+
 def door_open():
     #duty_cycle_percentage = right_position * 100 / ms_per_cycle
     doorServo.mid()
     time.sleep(0.5)
     doorServo.detach()
-    
+
 
 def door_lock():
     doorServo.min()
@@ -77,7 +77,7 @@ def insertDb(id, name):
 def avg_temperature():
     obj_tem = []
     avg_obj_tem = 0
-    
+
     for i in range(0, TEMPERATURE_TIMES):
         obj_tem.append(mlx.object_temperature)
 
@@ -89,9 +89,7 @@ def avg_temperature():
     avg_obj_tem = avg_obj_tem / (TEMPERATURE_TIMES - (TEMPERATURE_REMOVE*2))
     return avg_obj_tem
 
-#flask configuration
-
-
+# flask configuration
 
 
 # main program
@@ -101,18 +99,16 @@ server_reset_address = baseAddress + '/reset_status'
 
 while True:
     try:
-        respond = requests.post(server_address, json={"mytext":"lalala"})
+        respond = requests.post(server_address, json={"mytext": "lalala"})
         if respond.ok:
             print(respond.json())
             respond = respond.json()
             TestFaceStatus = respond['status']
         time.sleep(.2)
-        
 
     except requests.exceptions.ConnectionError:
-        pass
-    finally:
         time.sleep(.2)
+        continue
 
     # Testing output data for face recognition
     face_recognition = TestFaceStatus
@@ -123,14 +119,15 @@ while True:
 
     print("temperature = " + str(obj_tem))
 
-    if (face_recognition == True) and (obj_tem <= BASE_DEGREE): #remember to change condition when demo
+    # remember to change condition when demo
+    if (face_recognition == True) and (obj_tem <= BASE_DEGREE):
         door_open()
         time.sleep(5)
         door_lock()
         time.sleep(2)
         # insertDb(personId, personName)
 
-    #resetting status
+    # resetting status
     try:
         res = requests.get(server_reset_address)
         if res.ok:
