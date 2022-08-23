@@ -1,6 +1,6 @@
 # import the necessary packages
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from tensorflow.keras.preprocessing.image import img_to_array
+from keras.applications.mobilenet_v2 import preprocess_input
+from keras.preprocessing.image import img_to_array
 import numpy as np
 import cv2
 

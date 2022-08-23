@@ -301,16 +301,19 @@ def registerFace(uid, image_hub):
         # Save fullFace and upperFace images
         if face is not None and upperFace is not None and flag is True:
             # print("2 - " + str(count))
-            cv2.imwrite(
-                userFullFaceDataDir + "/" + uid + "_" +
-                str(count - adjustImageNumber) + ".jpg",
-                face
-            )
-            cv2.imwrite(
-                userUpperFaceDataDir + "/" + uid + "_" +
-                str(count - adjustImageNumber) + ".jpg",
-                upperFace
-            )
+            try:
+                cv2.imwrite(
+                    userFullFaceDataDir + "/" + uid + "_" +
+                    str(count - adjustImageNumber) + ".jpg",
+                    face
+                )
+                cv2.imwrite(
+                    userUpperFaceDataDir + "/" + uid + "_" +
+                    str(count - adjustImageNumber) + ".jpg",
+                    upperFace
+                )
+            except:
+                continue
             count += 1
             finishPercent = round((count - adjustImageNumber) / imageNumber * 100)
             draw_text(img, str(finishPercent) + "%", rect[0], rect[1] - 5)
