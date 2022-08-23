@@ -268,10 +268,12 @@ def face_detect(frame, faceNet, maskNet):
         # in the above `for` loop
         faces = np.array(faces, dtype="float32")
 
-    (x, y, w, h) = faces[0]
+        (x, y, w, h) = faces[0]
+        return gray[y:y + w, x:x + h], faces[0]
+
     # return a 2-tuple of the face locations and their corresponding
     # locations
-    return gray[y:y + w, x:x + h], faces[0]
+    return None, None
 
 cap = cv2.VideoCapture(1)
 
@@ -279,8 +281,11 @@ while True:
     ret, image = cap.read()
     try:
         face, rect = face_detect(image, faceNet, maskNet)
-        (x, y, w, h) = rect
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        print("1")
+        if face is not None and rect is not None:
+            (x, y, w, h) = rect
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            print(True)
     except:
         pass
     cv2.imshow('webcam', image)
