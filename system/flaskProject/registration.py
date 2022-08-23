@@ -285,9 +285,9 @@ def registerFace(uid, image_hub):
         flag = True
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
+        image_hub.send_reply(b'OK')
         if img is None:
             continue
-        image_hub.send_reply(b'OK')
 
         face, rect = getFaceImg(img)
         upperFace, upperRect = getUpperFaceImg(img)

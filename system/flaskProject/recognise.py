@@ -116,6 +116,9 @@ def recognise(image_hub):
         # ret, img = cap.read()
         rpi_name, img = image_hub.recv_image()
         image_hub.send_reply(b'OK')
+        if img is None:
+            continue
+
         detect_result = detect_mask_video.mask_detector(img, faceNet, maskNet)
         print(detect_result)
         if detect_result is True:
