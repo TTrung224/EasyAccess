@@ -93,9 +93,9 @@ def avg_temperature():
 
 
 # main program
-TestFaceStatus = False
 server_address = baseAddress + '/status_send'
 server_reset_address = baseAddress + '/reset_status'
+respond = {"status": False, "name": "", "ID": ""}
 
 while True:
     try:
@@ -111,7 +111,7 @@ while True:
         continue
 
     # Testing output data for face recognition
-    face_recognition = TestFaceStatus
+    face_recognition = respond["status"]
     personId = respond['ID']
     personName = respond['name']
 
