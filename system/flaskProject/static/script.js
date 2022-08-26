@@ -2,11 +2,11 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 if(urlParams.get('error') == 'existed'){
-    alert("Id existed");
+    alert("The user ID has existed in the system");
 }else if(urlParams.get('error') == 'wrongId'){
-    alert("Wrong ID");
+    alert("Something went wrong with user ID or user type");
 }else if(urlParams.get('error') == 'wrongDate'){
-    alert("Wrong date");
+    alert("Error with expiration date format");
 }
 
 

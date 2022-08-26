@@ -38,7 +38,7 @@ def predict(test_img, face_recogniser, subjects):
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 60:
+        if percent < 50:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
@@ -46,7 +46,8 @@ def predict(test_img, face_recogniser, subjects):
         else:
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
-            label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
@@ -82,7 +83,8 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         else:
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
-            label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
