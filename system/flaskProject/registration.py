@@ -14,6 +14,10 @@ upperFaceTrainingDataDir = os.path.join(BASE_DIR, "upperFace_training_data")
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
 upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
+prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
+weightsPath = os.path.join(
+    BASE_DIR, "face_detector/res10_300x300_ssd_iter_140000.caffemodel")
+faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # number of training image per person
 realImageNumber = 200
@@ -284,10 +288,13 @@ def registerFace(uid, image_hub):
     while True:
         flag = True
         # ret, img = cap.read()
-        rpi_name, img = image_hub.recv_image()
-        if img is None:
+        try:
+            rpi_name, img = image_hub.recv_image()
+            image_hub.send_reply(b'OK')
+            if img is None:
+                continue
+        except Exception:
             continue
-        image_hub.send_reply(b'OK')
 
         face, rect = getFaceImg(img)
         upperFace, upperRect = getUpperFaceImg(img)
@@ -301,18 +308,22 @@ def registerFace(uid, image_hub):
         # Save fullFace and upperFace images
         if face is not None and upperFace is not None and flag is True:
             # print("2 - " + str(count))
-            cv2.imwrite(
-                userFullFaceDataDir + "/" + uid + "_" +
-                str(count - adjustImageNumber) + ".jpg",
-                face
-            )
-            cv2.imwrite(
-                userUpperFaceDataDir + "/" + uid + "_" +
-                str(count - adjustImageNumber) + ".jpg",
-                upperFace
-            )
+            try:
+                cv2.imwrite(
+                    userFullFaceDataDir + "/" + uid + "_" +
+                    str(count - adjustImageNumber) + ".jpg",
+                    face
+                )
+                cv2.imwrite(
+                    userUpperFaceDataDir + "/" + uid + "_" +
+                    str(count - adjustImageNumber) + ".jpg",
+                    upperFace
+                )
+            except:
+                continue
             count += 1
-            finishPercent = round((count - adjustImageNumber) / imageNumber * 100)
+            finishPercent = round(
+                (count - adjustImageNumber) / imageNumber * 100)
             draw_text(img, str(finishPercent) + "%", rect[0], rect[1] - 5)
 
         ret, jpg = cv2.imencode('.jpg', img)
