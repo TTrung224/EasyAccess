@@ -1,6 +1,6 @@
-**/fullFace_training_data
+fullFace_training_data/**
 !fullFace_training_data/.gitkeep 
 
 
-**/upperFace_training_data
+upperFace_training_data/**
 !upperFace_training_data/.gitkeep 
