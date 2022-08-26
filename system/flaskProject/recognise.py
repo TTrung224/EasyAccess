@@ -32,7 +32,7 @@ def predict(test_img, face_recogniser, subjects):
 
     try:
         # detect face from the image
-        face, rect = detect_face(img, faceNet)
+        face, rect = detect_face(img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
         percent = round(100 - percent)
