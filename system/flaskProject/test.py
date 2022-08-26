@@ -64,21 +64,24 @@ from functions import detect_face
 import numpy as np
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-fullFaceTrainingDataDir = os.path.join(BASE_DIR, "fullFace_training_data")
-upperFaceTrainingDataDir = os.path.join(BASE_DIR, "upperFace_training_data")
+faceTrainingDataDir = os.path.join(BASE_DIR, "face_training_data")
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
 upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
+upperFaceRatio = 0.5
 
-
-def retrainFull():
-    print("full face train:")
+def retrain():
+    print("Retrain face data:")
     print("Preparing data...")
 
-    dataDirs = os.listdir(fullFaceTrainingDataDir)
+    dataDirs = os.listdir(faceTrainingDataDir)
 
     # list to hold all subject faces
-    faces = []
+    fullFaces = []
+
+    # list to hold all subject upper faces
+    upperFaces = []
+
     # list to hold labels for all subjects
     labels = []
 
@@ -91,7 +94,7 @@ def retrainFull():
         # extract label number of subject from dir_name
         label = int(dirName)
 
-        userDir = fullFaceTrainingDataDir + "/" + dirName
+        userDir = faceTrainingDataDir + "/" + dirName
         # get the images names that are inside the given subject directory
         subject_images_names = os.listdir(userDir)
 
@@ -113,79 +116,36 @@ def retrainFull():
             face, rect = detect_face(image)
 
             if face is not None:
-                # add face to list of faces
-                faces.append(face)
                 # add label for this face
                 labels.append(label)
 
-    print("Data prepared")
-    # print total faces and labels
-    print("Total faces: ", len(faces))
-    print("Total labels: ", len(labels))
+                # add face to list of faces
+                fullFaces.append(face)
 
-    recogniser = cv2.face.LBPHFaceRecognizer_create()
-    recogniser.train(faces, np.array(labels))
-    recogniser.save(fullFaceTrainerDir)
-    print("Train fullFace successfully")
-
-
-def retrainUpper():
-    print("upper face train:")
-    print("Preparing data...")
-
-    dataDirs = os.listdir(upperFaceTrainingDataDir)
-
-    # list to hold all subject faces
-    faces = []
-    # list to hold labels for all subjects
-    labels = []
-
-    for dirName in dataDirs:
-
-        # ignore system files like .DS_Store
-        if dirName.startswith("."):
-            continue
-
-        # extract label number of subject from dir_name
-        label = int(dirName)
-
-        userDir = upperFaceTrainingDataDir + "/" + dirName
-        # get the images names that are inside the given subject directory
-        subject_images_names = os.listdir(userDir)
-
-        # go through each image name, read image,
-        # detect face and add face to list of faces
-        for image_name in subject_images_names:
-
-            # ignore system files like .DS_Store
-            if image_name.startswith("."):
-                continue
-
-            # build image path
-            image_path = userDir + "/" + image_name
-
-            # read image
-            image = cv2.imread(image_path)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-            # add face to list of faces
-            faces.append(image)
-            # add label for this face
-            labels.append(label)
+                # add upper face part to list of upper faces
+                w, h = face.shape[0], face.shape[1]
+                x, y = 0, 0
+                upperFace = face[y:y + round(upperFaceRatio * w), x:x + h]
+                upperFaces.append(upperFace)
 
     print("Data prepared")
     # print total faces and labels
-    print("Total faces: ", len(faces))
+    print("Total full faces: ", len(fullFaces))
+    print("Total upper faces: ", len(upperFaces))
     print("Total labels: ", len(labels))
 
-    recogniser = cv2.face.LBPHFaceRecognizer_create()
-    recogniser.train(faces, np.array(labels))
-    recogniser.save(upperFaceTrainerDir)
-    print("Train upperFace successfully")
+    fullFaceRecogniser = cv2.face.LBPHFaceRecognizer_create()
 
+    fullFaceRecogniser.train(fullFaces, np.array(labels))
+    fullFaceRecogniser.save(fullFaceTrainerDir)
+    print("Train full face recogniser successfully")
 
-retrainFull()
-retrainUpper()
+    upperFaceRecogniser = cv2.face.LBPHFaceRecognizer_create()
+    upperFaceRecogniser.train(upperFaces, np.array(labels))
+    upperFaceRecogniser.save(upperFaceTrainerDir)
+    print("Train upper face recogniser successfully")
+
+# retrain()
 
 
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -198,10 +158,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
 weightsPath = os.path.join(
     BASE_DIR, "face_detector/res10_300x300_ssd_iter_140000.caffemodel")
-faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
-
-# load the face mask detector model from disk
-maskNet = load_model("mask_detector.model")
+# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+#
+# # load the face mask detector model from disk
+# maskNet = load_model("mask_detector.model")
 
 def face_detect(frame, faceNet, maskNet):
 
@@ -283,3 +243,4 @@ def face_detect(frame, faceNet, maskNet):
 #         pass
 #     cv2.imshow('webcam', image)
 #     cv2.waitKey(1)
+
