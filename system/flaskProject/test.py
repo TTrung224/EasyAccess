@@ -281,11 +281,8 @@ while True:
     ret, image = cap.read()
     try:
         face, rect = face_detect(image, faceNet, maskNet)
-        print("1")
-        if face is not None and rect is not None:
-            (x, y, w, h) = rect
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            print(True)
+        (x, y, w, h) = rect
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
     except:
         pass
     cv2.imshow('webcam', image)
