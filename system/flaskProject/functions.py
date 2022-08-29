@@ -129,4 +129,4 @@ def detect_face(img):
 #             #  face = frame[right:right+left, top:top+bottom]
 #             #  frame[right:right+face.shape[0], top:top+face.shape[1]] = face
 
-#     return gray[x1:x2, y1:yy2], tuple(box[0])
+#     return gray[x1:x2, y1:y2], tuple(box[0])
