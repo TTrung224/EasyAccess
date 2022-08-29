@@ -132,6 +132,7 @@ def detect_face(net, frame, conf_threshold=0.7):
 
     return gray[y1:y2, x1:x2], tuple(box[0])
 
+
 def detect_face(net, frame, conf_threshold=0.7):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frameHeight = frame.shape[0]
@@ -157,9 +158,9 @@ def detect_face(net, frame, conf_threshold=0.7):
 
             box.append([x1, y1, bottom, left])
             #  blurry rectangle to the detected face
-            #  face = frame[right:right+left, top:top+bottom]
-            #  frame[right:right+face.shape[0], top:top+face.shape[1]] = face
+            face = gray[right:right+left, top:top+bottom]
+            gray[right:right+face.shape[0], top:top+face.shape[1]] = face
     if len(box) == 0:
         return None, None
     else:
-        return gray[y1:y2, x1:x2], tuple(box[0])
+        return gray[right:right+face.shape[0], top:top+face.shape[1]], tuple(box[0])
