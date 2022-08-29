@@ -76,7 +76,7 @@ def trainFaceData(uid):
             fullFaces.append(face)
 
             # add upper face part to list of upper faces
-            w, h = face.shape[0], face.shape[1]
+            (_, _, w, h) = rect
             x, y = 0, 0
             upperFace = face[y:y + round(upperFaceRatio * w), x:x + h]
             upperFaces.append(upperFace)
