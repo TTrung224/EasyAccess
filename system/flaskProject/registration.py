@@ -66,7 +66,7 @@ def trainFaceData(uid):
         image = cv2.imread(image_path)
 
         # detect face
-        face, rect = detect_face(image)
+        face, rect = detect_face(faceNet, image)
 
         if face is not None:
             # add label for this face
@@ -153,37 +153,44 @@ def checkExist(uid):
 
 # function to get training face image
 def getFaceImg(img):
-    # convert the test image to gray scale as opencv face detector expects gray images
+    # # convert the test image to gray scale as opencv face detector expects gray images
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #
+    # # load OpenCV face detector
+    # face_cascade = cv2.CascadeClassifier(
+    #     cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    #
+    # # detect multiscale images
+    # # result is a list of faces
+    # faces = face_cascade.detectMultiScale(
+    #     grayImg, scaleFactor=1.1, minNeighbors=5)
+    #
+    # # if no faces are detected then return None
+    # if (len(faces) == 0):
+    #     return None, None
+    #
+    # # extract the face area
+    # (x, y, w, h) = faces[0]
 
-    # load OpenCV face detector
-    face_cascade = cv2.CascadeClassifier(
-        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    face, rect = detect_face(faceNet, img)
+    (x, y, w, h) = rect
 
-    # detect multiscale images
-    # result is a list of faces
-    faces = face_cascade.detectMultiScale(
-        grayImg, scaleFactor=1.1, minNeighbors=5)
-
-    for x, y, w, h in faces:
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
-
-    # if no faces are detected then return None
-    if (len(faces) == 0):
-        return None, None
-
-    # extract the face area
-    (x, y, w, h) = faces[0]
-
-    # get a bit bigger img of the face for easy further training
+    cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
     add = 60
     x -= add
     y -= add
     w += add * 2
     h += add * 2
+    cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
+
+    # add = 60
+    # x -= add
+    # y -= add
+    # w += add * 2
+    # h += add * 2
 
     # return only the face part of the image
-    return grayImg[y:y + w, x:x + h], faces[0]
+    return grayImg[y:y + h, x:x + w], rect
 
 
 # function to get training upper part face image
@@ -191,28 +198,29 @@ def getUpperFaceImg(img):
     # convert the test image to gray scale as opencv face detector expects gray images
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # load OpenCV face detector
-    face_cascade = cv2.CascadeClassifier(
-        cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    # # load OpenCV face detector
+    # face_cascade = cv2.CascadeClassifier(
+    #     cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    #
+    # # detect multiscale images
+    # # result is a list of faces
+    # faces = face_cascade.detectMultiScale(
+    #     grayImg, scaleFactor=1.1, minNeighbors=5)
 
-    # detect multiscale images
-    # result is a list of faces
-    faces = face_cascade.detectMultiScale(
-        grayImg, scaleFactor=1.1, minNeighbors=5)
-
-    for x, y, w, h in faces:
-        height = round(upperFaceRatio * h)
-        cv2.rectangle(img, (x, y), (x + w, y + height), (0, 255, 0), 5)
+    face, rect = detect_face(faceNet, img)
 
     # if no faces are detected then return None
-    if (len(faces) == 0):
+    if face is None:
         return None, None
 
     # extract the face area
-    (x, y, w, h) = faces[0]
+    (x, y, w, h) = rect
+
+    height = round(upperFaceRatio * h)
+    cv2.rectangle(img, (x, y), (x + w, y + height), (0, 255, 0), 5)
 
     # return the upper face part of the image
-    return grayImg[y:y + round(upperFaceRatio * w), x:x + h], faces[0]
+    return grayImg[y:y + round(upperFaceRatio * w), x:x + h], rect
 
 
 # function to write user data into pickle file

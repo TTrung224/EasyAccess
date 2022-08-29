@@ -32,7 +32,7 @@ def predict(test_img, face_recogniser, subjects):
 
     try:
         # detect face from the image
-        face, rect = detect_face(img)
+        face, rect = detect_face(faceNet, img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
         percent = round(100 - percent)
@@ -46,8 +46,8 @@ def predict(test_img, face_recogniser, subjects):
         else:
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
-            # label_text = subjects[str(label)][0] + " - " + percent
-            label_text = subjects[str(label)][0]
+            label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
@@ -66,7 +66,6 @@ def predict(test_img, face_recogniser, subjects):
 def upperFacePredict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
-
     try:
         # detect face from the image
         face, rect = getUpperFaceImg(img)
@@ -75,7 +74,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 40:
+        if percent < 10:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
@@ -83,8 +82,8 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         else:
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
-            # label_text = subjects[str(label)][0] + " - " + percent
-            label_text = subjects[str(label)][0]
+            label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
@@ -96,6 +95,8 @@ def upperFacePredict(test_img, face_recogniser, subjects):
             draw_rectangle(img, rect)
             # draw name of predicted person
             draw_text(img, label_text, rect[0], rect[1] - 5)
+    except Exception as e:
+        print(e.args)
     finally:
         return img
 
