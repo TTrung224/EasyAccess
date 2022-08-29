@@ -101,3 +101,32 @@ def detect_face(img):
 #     # # return a 2-tuple of the face locations and their corresponding
 #     # # locations
 #     return gray[y:y + w, x:x + h], detections.shape[0]
+
+# def detect_face(net, frame, conf_threshold=0.7):
+#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#     frameHeight = frame.shape[0]
+#     frameWidth = frame.shape[1]
+#     blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), [
+#         104, 177, 123], False, False,)
+
+#     net.setInput(blob)
+#     detections = net.forward()
+#     box = []
+#     for i in range(detections.shape[2]):
+#         confidence = detections[0, 0, i, 2]
+#         if confidence > conf_threshold:
+#             x1 = int(detections[0, 0, i, 3] * frameWidth)
+#             y1 = int(detections[0, 0, i, 4] * frameHeight)
+#             x2 = int(detections[0, 0, i, 5] * frameWidth)
+#             y2 = int(detections[0, 0, i, 6] * frameHeight)
+#             box.append([x1, y1, x2, y2])
+#             top = x1
+#             right = y1
+#             bottom = x2-x1
+#             left = y2-y1
+
+#             #  blurry rectangle to the detected face
+#             #  face = frame[right:right+left, top:top+bottom]
+#             #  frame[right:right+face.shape[0], top:top+face.shape[1]] = face
+
+#     return gray[x1:x2, y1:yy2], tuple(box[0])

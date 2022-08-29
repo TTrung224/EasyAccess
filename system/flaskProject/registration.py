@@ -111,6 +111,8 @@ def trainFaceData(uid):
         print("train failed")
 
 # function to handle the user id input
+
+
 def uidHandle(uid, type):
     try:
         int(uid[0])
