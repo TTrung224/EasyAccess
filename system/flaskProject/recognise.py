@@ -6,7 +6,8 @@ import detect_mask_video
 import requests
 import json
 from tensorflow.keras.models import load_model
-from registration import getUpperFaceImg
+from registration import getUpperFaceImg, uidSystemHandle
+from expiration import check_expire
 
 server_address = 'http://127.0.0.1:5000/modify_status'
 
@@ -29,27 +30,39 @@ maskNet = load_model("mask_detector.model")
 def predict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
+    expired = None
+    expirationText = ""
 
     try:
         # detect face from the image
         face, rect = detect_face(faceNet, img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
+
+        expiration = check_expire(str(label))
+        if expiration == "0010":
+            expirationText = "Expired"
+        elif expiration == "1":
+            expirationText = "Valid"
+            expired = False
+
+        draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
+
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 50:
+        if percent < 50 or expired is True:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
             draw_text(img, "unknown", rect[0], rect[1] - 5)
         else:
-            # get name of respective label returned by face recognizer
+            uid = uidSystemHandle(str(label))
             percent = "{0}%".format(percent)
-            label_text = subjects[str(label)][0] + " - " + percent
-            # label_text = subjects[str(label)][0]
-            dict_holder = {"status": True, "ID": str(
-                label), "name": subjects[str(label)][0]}
+            # get name of respective label returned by face recognizer
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
+            dict_holder = {"status": True, "ID": uid, "name": subjects[str(label)][0]}
             try:
                 s = requests.post(
                     server_address, json=json.dumps(dict_holder)).content
@@ -66,26 +79,40 @@ def predict(test_img, face_recogniser, subjects):
 def upperFacePredict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
+    expired = None
+    expirationText = ""
+
     try:
         # detect face from the image
         face, rect = getUpperFaceImg(img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
+        expiration = check_expire(str(label))
+
+        if expiration == "0010":
+            expirationText = "Expired"
+        elif expiration == "1":
+            expirationText = "Valid"
+            expired = False
+
+        draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
+
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 10:
+        if percent < 20 or expired is True:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
             draw_text(img, "unknown", rect[0], rect[1] - 5)
+
         else:
-            # get name of respective label returned by face recognizer
+            uid = uidSystemHandle(str(label))
             percent = "{0}%".format(percent)
-            label_text = subjects[str(label)][0] + " - " + percent
-            # label_text = subjects[str(label)][0]
-            dict_holder = {"status": True, "ID": str(
-                label), "name": subjects[str(label)][0]}
+            # get name of respective label returned by face recognizer
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
+            dict_holder = {"status": True, "ID": uid, "name": subjects[str(label)][0]}
             try:
                 s = requests.post(
                     server_address, json=json.dumps(dict_holder)).content
@@ -95,6 +122,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
             draw_rectangle(img, rect)
             # draw name of predicted person
             draw_text(img, label_text, rect[0], rect[1] - 5)
+
     except Exception as e:
         print(e.args)
     finally:

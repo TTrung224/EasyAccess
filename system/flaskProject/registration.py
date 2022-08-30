@@ -1,6 +1,6 @@
 import cv2
 import os
-
+import flash
 import numpy as np
 
 from functions import detect_face, draw_text
@@ -26,11 +26,10 @@ imageNumber = realImageNumber + 1
 # number of loops before taking training image
 adjustImageNumber = 20
 
-upperFaceRatio = 0.5
+upperFaceRatio = 0.6
+
 
 # function to train the fullFace recogniser
-
-
 def trainFaceData(uid):
     print("face data train:")
     print("Preparing data...")
@@ -76,9 +75,18 @@ def trainFaceData(uid):
             fullFaces.append(face)
 
             # add upper face part to list of upper faces
+            # (_, _, w, h) = rect
             w, h = face.shape[0], face.shape[1]
             x, y = 0, 0
-            upperFace = face[y:y + round(upperFaceRatio * w), x:x + h]
+            upperFace = face[y:y + round(upperFaceRatio * h), x:x + w]
+
+            # TODO: delete after test
+            cv2.imwrite(
+                "/Users/trungtran/Documents/workSpace/EasyAccess/system/flaskProject/face_training_data/testUpper" + "/" + uid + "_" +
+                image_name,
+                upperFace
+            )
+
             upperFaces.append(upperFace)
 
     print("Data prepared")
@@ -110,10 +118,9 @@ def trainFaceData(uid):
     else:
         print("train failed")
 
+
 # function to handle the user id input
-
-
-def uidHandle(uid, type):
+def uidInputHandle(uid, type):
     try:
         int(uid[0])
     except:
@@ -129,6 +136,22 @@ def uidHandle(uid, type):
         return False
     return uid
 
+
+# function to handle the user id input
+def uidSystemHandle(labelUid):
+
+    prefix = labelUid[0]
+    id = labelUid[1:]
+
+    if prefix == "1":
+        uid = "s" + id
+    elif type == "2":
+        uid = "v" + id
+    elif type == "3":
+        uid = "vi" + id
+    else:
+        return False
+    return uid
 
 # function to handle the user string date input
 def dateHandle(strDate):
@@ -173,6 +196,9 @@ def getFaceImg(img):
     # (x, y, w, h) = faces[0]
 
     face, rect = detect_face(faceNet, img)
+    if face is None:
+        return None, None
+
     (x, y, w, h) = rect
 
     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
@@ -181,13 +207,6 @@ def getFaceImg(img):
     y -= add
     w += add * 2
     h += add * 2
-    cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
-
-    # add = 60
-    # x -= add
-    # y -= add
-    # w += add * 2
-    # h += add * 2
 
     # return only the face part of the image
     return grayImg[y:y + h, x:x + w], rect
@@ -220,13 +239,13 @@ def getUpperFaceImg(img):
     cv2.rectangle(img, (x, y), (x + w, y + height), (0, 255, 0), 5)
 
     # return the upper face part of the image
-    return grayImg[y:y + round(upperFaceRatio * w), x:x + h], rect
+    return grayImg[y:y + height, x:x + w], rect
 
 
 # function to write user data into pickle file
 def registerGetInfo(id, name, type, expiration):
     # process user id
-    uid = uidHandle(id, type)
+    uid = uidInputHandle(id, type)
     if uid is False:
         print("wrong user id format")
         return "wrong-id"
@@ -307,8 +326,10 @@ def registerFace(uid, image_hub):
         if count == imageNumber + adjustImageNumber:
             break
 
-    # cap.release()
+
+    flash("Training")
     trainFaceData(uid)
+    flash("Train successfully!")
 
 # def register(id, name, type, expiration):
 #     uid = registerGetInfo(id, name, type, expiration)

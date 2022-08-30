@@ -44,19 +44,19 @@ import datetime
 
 """****************"""
 
-subjects = {}
-# subjects = {'13852304': ['Thong', datetime.datetime(2022, 8, 16, 9, 45, 20, 128046), datetime.date(2022, 8, 18)]}
-
-with open("data/labels.pickle", 'wb') as file:
-    pickle.dump(subjects, file)
-    file.close()
-
-
-with open('data/labels.pickle', 'rb') as file:
-    subjects = pickle.load(file)
-    file.close()
-
-print(subjects)
+# subjects = {}
+# subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 29, 20, 55, 32, 792316), datetime.date(2022, 9, 10)]}
+#
+# with open("data/labels.pickle", 'wb') as file:
+#     pickle.dump(subjects, file)
+#     file.close()
+#
+#
+# with open('data/labels.pickle', 'rb') as file:
+#     subjects = pickle.load(file)
+#     file.close()
+#
+# print(subjects)
 
 
 """****************"""
@@ -68,7 +68,7 @@ faceTrainingDataDir = os.path.join(BASE_DIR, "face_training_data")
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
 upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
-upperFaceRatio = 0.5
+upperFaceRatio = 0.6
 
 prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
 weightsPath = os.path.join(
@@ -130,7 +130,7 @@ def retrain():
                 # add upper face part to list of upper faces
                 w, h = face.shape[0], face.shape[1]
                 x, y = 0, 0
-                upperFace = face[y:y + round(upperFaceRatio * w), x:x + h]
+                upperFace = face[y:y + round(upperFaceRatio * h), x:x + w]
                 upperFaces.append(upperFace)
 
     print("Data prepared")
@@ -150,4 +150,4 @@ def retrain():
     upperFaceRecogniser.save(upperFaceTrainerDir)
     print("Train upper face recogniser successfully")
 
-# retrain()
+retrain()

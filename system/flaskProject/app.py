@@ -4,10 +4,13 @@ import imagezmq
 import recognise
 import registration
 import json
+from flask_cors import CORS, cross_origin
+import flash
 
-dict = {'status': False, 'ID': '', 'name': ''}
+dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None}
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 image_hub = imagezmq.ImageHub()
 
@@ -70,6 +73,7 @@ def regisScan():
 
 
 @app.route('/status_send', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def status_send():
     result = dict
     return jsonify(result)
@@ -92,6 +96,24 @@ def modify_status():
     dict['ID'] = data['ID']
     dict['name'] = data['name']
     return "message received"
+
+
+# modify door status 
+@app.route('/modify_door_status', methods=['POST'])
+def modify_door_status():
+    jsondata = request.get_json()
+    data = json.loads(jsondata)
+    dict['door'] = data['door']
+    return "door status updated"
+
+
+# modify temperature 
+@app.route('/modify_temp', methods=['POST'])
+def modify_temp():
+    jsondata = request.get_json()
+    data = json.loads(jsondata)
+    dict['temp'] = data['temp']
+    return "temperature updated"
 
 
 # to check status sent from main program

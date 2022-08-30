@@ -11,12 +11,17 @@
     <h1 class="header" style="text-align: center; ">Easy Access</h1>
     <div class="main-page-body">  
         <div><img src="recogVideo" alt="camera"></div>
+        <div>
+            <p id="temp"></p>
+            <p id="door-status"></p>
+        </div>
 
         <div class="main-page-btn">
             <a class="move-to-res-btn" href="/registration">Registration</a>
             <a class="move-to-res-btn Expiration-btn" href="">Update Expiration</a>
         </div>
     </div>
-    
+    <script type="text/javascript" src="{{url_for('static',filename='recognise_script.js')}}"></script>
+
 </body>
 </html>

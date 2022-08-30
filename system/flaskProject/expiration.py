@@ -4,6 +4,7 @@ from datetime import date
 import os
 import pickle
 import functions
+from registration import uidInputHandle
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(BASE_DIR, "data/labels.pickle")
@@ -20,7 +21,7 @@ date_format = "%d:%m:%Y"
 # Function to update expire date of user
 def set_expiration_time(id, expire_time):
     # process user id
-    uid = functions.uidHandle(id, type)
+    uid = uidInputHandle(id, type)
     if uid is False:
         print("wrong user id format")
         return False
@@ -44,16 +45,16 @@ def set_expiration_time(id, expire_time):
 
 # *may include return time to expire date
 def check_expire(id):
-    # process user id
-    uid = functions.uidHandle(id, type)
-    if uid is False:
-        print("wrong user id format")
-        return None
+    # # process user id
+    # uid = functions.uidHandle(id, type)
+    # if uid is False:
+    #     print("wrong user id format")
+    #     return None
 
-    if uid not in expire_time_ids:
+    if id not in expire_time_ids:
         return "0000"
     else:
-        expire_time = expire_time_ids[uid][2]
+        expire_time = expire_time_ids[id][2]
         today = date.today()
         if today > expire_time:
             return "0010"

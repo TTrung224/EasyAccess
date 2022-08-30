@@ -14,7 +14,8 @@ baseAddress = 'http://192.168.0.2:5000'
 
 # all constant parameter goes here
 PIN_NUM = 17
-BASE_DEGREE = 37
+BASE_DEGREE = 35
+SICK_DEGREE = 37
 SERVO_FREQ = 50
 TEMPERATURE_TIMES = 26
 TEMPERATURE_REMOVE = 3
@@ -95,7 +96,10 @@ def avg_temperature():
 # main program
 server_address = baseAddress + '/status_send'
 server_reset_address = baseAddress + '/reset_status'
-respond = {"status": False, "name": "", "ID": ""}
+server_door_modify_address = baseAddress + '/modify_door_status'
+server_temp_modify_address = baseAddress + '/modify_temp'
+
+# respond = {"status": False, "name": "", "ID": ""}
 
 while True:
     try:
@@ -115,17 +119,39 @@ while True:
     personId = respond['ID']
     personName = respond['name']
 
-    obj_tem = avg_temperature()
+    obj_tem = round(avg_temperature(),1)
+    try:
+        dict_holder = {'temp': obj_tem}
+        res = requests.post(server_temp_modify_address, json=json.dumps(dict_holder))
+        if res.ok:
+            print(res.content.decode("utf-8"))
+    except requests.exceptions.ConnectionError:
+        pass
 
     print("temperature = " + str(obj_tem))
 
     # remember to change condition when demo
-    if (face_recognition == True) and (obj_tem <= BASE_DEGREE):
+    if (face_recognition == True) and (obj_tem > BASE_DEGREE) and (obj_tem < SICK_DEGREE):
         door_open()
+        try:
+            dict_holder = {"door": True}
+            res = requests.post(server_door_modify_address, json=json.dumps(dict_holder))
+            if res.ok:
+                print(res.content.decode("utf-8"))
+        except requests.exceptions.ConnectionError:
+            pass
         time.sleep(5)
         door_lock()
+        try:
+            dict_holder = {"door": False}
+            res = requests.post(server_door_modify_address, json=json.dumps(dict_holder))
+            if res.ok:
+                print(res.content.decode("utf-8"))
+        except requests.exceptions.ConnectionError:
+            pass
         time.sleep(2)
-        # insertDb(personId, personName)
+        insertDb(personId, personName)
+
 
     # resetting status
     try:
@@ -135,4 +161,3 @@ while True:
         time.sleep(.2)
     except requests.exceptions.ConnectionError:
         pass
-    time.sleep(0.2)

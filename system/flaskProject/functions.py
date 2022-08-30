@@ -120,46 +120,16 @@ def detect_face(net, frame, conf_threshold=0.7):
             x2 = int(detections[0, 0, i, 5] * frameWidth)
             y2 = int(detections[0, 0, i, 6] * frameHeight)
 
-            top = x1
-            right = y1
-            bottom = x2-x1
-            left = y2-y1
-            print("w = " + bottom)
-            box.append([x1, y1, bottom, left])
+            x = x1
+            y = y1
+            w = x2 - x1
+            h = y2 - y1
+
+            box.append([x, y, w, h])
             #  blurry rectangle to the detected face
-            #  face = frame[right:right+left, top:top+bottom]
-            #  frame[right:right+face.shape[0], top:top+face.shape[1]] = face
+            # face = gray[right:right+left, top:top+bottom]
+            # gray[right:right+face.shape[0], top:top+face.shape[1]] = face
+        if len(box) == 0:
+            return None, None
 
-    return gray[y1:y2, x1:x2], tuple(box[0])
-
-def detect_face(net, frame, conf_threshold=0.7):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    frameHeight = frame.shape[0]
-    frameWidth = frame.shape[1]
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), [
-        104, 177, 123], False, False,)
-
-    net.setInput(blob)
-    detections = net.forward()
-    box = []
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > conf_threshold:
-            x1 = int(detections[0, 0, i, 3] * frameWidth)
-            y1 = int(detections[0, 0, i, 4] * frameHeight)
-            x2 = int(detections[0, 0, i, 5] * frameWidth)
-            y2 = int(detections[0, 0, i, 6] * frameHeight)
-
-            top = x1
-            right = y1
-            bottom = x2-x1
-            left = y2-y1
-
-            box.append([x1, y1, bottom, left])
-            #  blurry rectangle to the detected face
-            #  face = frame[right:right+left, top:top+bottom]
-            #  frame[right:right+face.shape[0], top:top+face.shape[1]] = face
-    if len(box) == 0:
-        return None, None
-    else:
-        return gray[y1:y2, x1:x2], tuple(box[0])
+        return gray[y:y + h, x:x + w], tuple(box[0])
