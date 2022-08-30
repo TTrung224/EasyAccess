@@ -42,7 +42,7 @@ def regisPage():
     return render_template('registration.html')
 
 
-@app.route('/register', methods=["GET"])
+@app.route('/register', methods=["GET"]) 
 def register():
     id = request.args.get("ID")
     name = request.args.get("Name")

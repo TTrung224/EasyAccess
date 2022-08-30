@@ -5,7 +5,7 @@ import pickle
 import detect_mask_video
 import requests
 import json
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from registration import getUpperFaceImg
 
 server_address = 'http://127.0.0.1:5000/modify_status'
@@ -23,22 +23,22 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the face mask detector model from disk
 maskNet = load_model("mask_detector.model")
+
+
 # function to predict the person label
-
-
 def predict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
 
     try:
         # detect face from the image
-        face, rect = detect_face(img)
+        face, rect = detect_face(faceNet, img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 60:
+        if percent < 50:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
@@ -47,6 +47,7 @@ def predict(test_img, face_recogniser, subjects):
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
             label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
@@ -65,7 +66,6 @@ def predict(test_img, face_recogniser, subjects):
 def upperFacePredict(test_img, face_recogniser, subjects):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
-
     try:
         # detect face from the image
         face, rect = getUpperFaceImg(img)
@@ -74,7 +74,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 40:
+        if percent < 10:
             # draw a rectangle around face detected
             draw_rectangle(img, rect)
             # draw name of predicted person
@@ -83,6 +83,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
             # get name of respective label returned by face recognizer
             percent = "{0}%".format(percent)
             label_text = subjects[str(label)][0] + " - " + percent
+            # label_text = subjects[str(label)][0]
             dict_holder = {"status": True, "ID": str(
                 label), "name": subjects[str(label)][0]}
             try:
@@ -94,6 +95,8 @@ def upperFacePredict(test_img, face_recogniser, subjects):
             draw_rectangle(img, rect)
             # draw name of predicted person
             draw_text(img, label_text, rect[0], rect[1] - 5)
+    except Exception as e:
+        print(e.args)
     finally:
         return img
 
@@ -114,8 +117,14 @@ def recognise(image_hub):
 
     while True:
         # ret, img = cap.read()
-        rpi_name, img = image_hub.recv_image()
-        image_hub.send_reply(b'OK')
+        try:
+            rpi_name, img = image_hub.recv_image()
+            image_hub.send_reply(b'OK')
+            if img is None:
+                continue
+        except Exception:
+            continue
+
         detect_result = detect_mask_video.mask_detector(img, faceNet, maskNet)
         print(detect_result)
         if detect_result is True:
