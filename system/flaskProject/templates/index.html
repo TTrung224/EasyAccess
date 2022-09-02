@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">    
     <title>Easy Access</title>
 </head>
 <body>
     <h1 class="header" style="text-align: center; ">Easy Access</h1>
     <div class="main-page-body">  
         <div><img src="recogVideo" alt="camera"></div>
-        <div>
-            <p id="temp"></p>
-            <p id="door-status"></p>
-        </div>
 
         <div class="main-page-btn">
             <a class="move-to-res-btn" href="/registration">Registration</a>
             <a class="move-to-res-btn Expiration-btn" href="">Update Expiration</a>
         </div>
+    </div>
+    <div class="tem-and-door" >
+        <p id="temp"></p>
+        <img src="../static/opening_barrier.png" alt="abc" id="door-status">
     </div>
     <script type="text/javascript" src="{{url_for('static',filename='recognise_script.js')}}"></script>
 

@@ -11,12 +11,13 @@
     <div class="regis-scan-page">
         <div><img src="{{ 'regisVideo?ID=' + request.args.get("ID")}}" alt="camera"></div>
 {#        <div><a href="{{"regisScanWithMask?ID=" + request.args.get("ID")}}" class="move-to-mask-res">Register with mask</a></div>#}
-        
-        {% for message in get_flashed_messages() %}
-            {{message}}
-        {% endfor %}
 
-        <div><a href="/" class="move-to-mask-res">Back to scan page</a></div>
+        <div>
+            <p class="status"></p>
+            <a href="/" class="move-to-mask-res disabled">Back to scan page</a>
+        </div>
     </div>
+    <script type="text/javascript" src="{{url_for('static',filename='regis_scan_script.js')}}"></script>
+
 </body>
 </html>

@@ -1,48 +1,55 @@
-.move-to-res-btn{
+.move-to-res-btn {
     text-decoration: none;
     color: black;
-   background-color: aquamarine; 
-   border-style: none;
-   border-radius: 8px;
-   padding: 10px;
-   margin-top: 10px;
+    background-color: aquamarine;
+    border-style: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
 }
 
-.move-to-res-btn:hover{
+.move-to-res-btn:hover {
     background-color: rgb(0, 253, 169);
 }
-.Expiration-btn{
-    background-color:rgb(255, 216, 157) ;
+
+.Expiration-btn {
+    background-color: rgb(255, 216, 157);
 }
-.Expiration-btn:hover{
-    background-color:rgb(255, 192, 98);
+
+.Expiration-btn:hover {
+    background-color: rgb(255, 192, 98);
 }
-.main-page-body{
+
+.main-page-body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content:space-evenly;
-}
-.main-page-btn{
-    display: flex;
-    flex-direction: column;
-    
+    justify-content: space-evenly;
 }
 
-.regis-form{
+.main-page-btn {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.regis-form {
     display: flex;
     flex-direction: column;
     width: 30%;
     margin-left: 35%;
 }
-.regis-form input,select{
+
+.regis-form input,
+select {
     margin-bottom: 10px;
     margin-top: 3px;
     padding: 5px;
     border-radius: 8px;
     border-style: solid;
 }
-.regis-form .submit-btn{
+
+.regis-form .submit-btn {
     background-color: rgb(108, 251, 203);
     border-style: none;
     width: 50%;
@@ -50,25 +57,53 @@
     margin-top: 10px;
 
 }
-.submit-btn:hover{
+
+.submit-btn:hover {
     background-color: rgb(0, 255, 170);
 }
-.full-page{
+
+.full-page {
     text-align: center;
 }
 
-.move-to-mask-res{
+.move-to-mask-res {
     text-decoration: none;
     color: black;
-    background-color:rgb(88, 255, 255);
+    background-color: rgb(88, 255, 255);
     padding: 10px;
     border-radius: 8px;
 }
-.move-to-mask-res:hover{
+
+.regis-scan-page .disabled{
+    pointer-events: none;
+    cursor: default;
+}
+
+.move-to-mask-res:hover {
     background-color: rgb(0, 234, 255);
 }
-.regis-scan-page{
+
+.regis-scan-page {
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.tem-and-door {
+    display: flex;
+    justify-content: space-around;
+}
+
+#temp {
+    background-color:#2CA1B6 ;
+    color: white;
+    padding: 15px;
+    font-weight: 900;
+    font-size: larger;
+    display: flex;
+    align-items: center;
+}
+
+#door-status{
+    height: 100px;
 }

@@ -4,6 +4,7 @@ import imagezmq
 import socket
 import time
 
+print("streaming")
 
 # initialize the ImageSender object with the socket address of the server
 sender = imagezmq.ImageSender(connect_to="tcp://192.168.2.248:5555")

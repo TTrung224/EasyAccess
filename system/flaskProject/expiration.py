@@ -19,12 +19,14 @@ date_format = "%d:%m:%Y"
 
 # input date is a datetime object
 # Function to update expire date of user
-def set_expiration_time(id, expire_time):
+def set_expiration_time(uid, expire_time):
+    """assume validated String id"""
+
     # process user id
-    uid = uidInputHandle(id, type)
-    if uid is False:
-        print("wrong user id format")
-        return False
+    # uid = uidInputHandle(id, type)
+    # if uid is False:
+    #     print("wrong user id format")
+    #     return False
 
     if uid not in expire_time_ids:
         print("id not exist")

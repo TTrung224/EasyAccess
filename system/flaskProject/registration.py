@@ -1,11 +1,16 @@
+import json
+
 import cv2
 import os
-import flash
 import numpy as np
+import requests
 
 from functions import detect_face, draw_text
 import pickle
 from datetime import datetime, timedelta
+from flask import redirect
+
+server_address = 'http://127.0.0.1:5000/modify_regis_status'
 
 # directories of the system files
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -326,10 +331,13 @@ def registerFace(uid, image_hub):
         if count == imageNumber + adjustImageNumber:
             break
 
-
-    flash("Training")
     trainFaceData(uid)
-    flash("Train successfully!")
+    dict_holder = {"regisStatus": True}
+    try:
+        s = requests.post(
+            server_address, json=json.dumps(dict_holder)).content
+    except Exception:
+        pass
 
 # def register(id, name, type, expiration):
 #     uid = registerGetInfo(id, name, type, expiration)

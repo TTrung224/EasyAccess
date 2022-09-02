@@ -8,6 +8,9 @@ from datetime import datetime
 from flask import Flask, request
 import json
 import requests
+import RPi.GPIO as GPIO
+
+print("Ras system is running")
 
 # address of the server
 baseAddress = 'http://192.168.0.2:5000'
@@ -20,9 +23,9 @@ SERVO_FREQ = 50
 TEMPERATURE_TIMES = 26
 TEMPERATURE_REMOVE = 3
 
-# set up the pin plugged and declare the servo
-doorServo = Servo(PIN_NUM)
-doorServo.detach()
+# # set up the pin plugged and declare the servo
+# doorServo = Servo(PIN_NUM)
+# doorServo.detach()
 
 
 # in servo motor,
@@ -51,17 +54,45 @@ connection = pymysql.connect(host='us-cdbr-east-06.cleardb.net',
                              cursorclass=pymysql.cursors.DictCursor)
 
 
+# def door_open():
+#     #duty_cycle_percentage = right_position * 100 / ms_per_cycle
+#     doorServo.mid()
+#     time.sleep(0.5)
+#     doorServo.detach()
+
+
+# def door_lock():
+#     doorServo.min()
+#     time.sleep(0.5)
+#     doorServo.detach()
+
+
+def controlDoor(angle):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(13, GPIO.OUT)
+    pwm=GPIO.PWM(13, 50)
+    pwm.start(0)
+	duty = angle / 18 + 2
+	GPIO.output(13, True)
+	pwm.ChangeDutyCycle(duty)
+    # 1 round: 0.68
+    # 1.5 round: 1.36
+    # 2 round: 2.04
+	time.sleep(2.04)
+	GPIO.output(13, False)
+	pwm.ChangeDutyCycle(0)
+    pwm.stop()
+    GPIO.cleanup()
+
+
 def door_open():
-    #duty_cycle_percentage = right_position * 100 / ms_per_cycle
-    doorServo.mid()
+    controlDoor(180)
     time.sleep(0.5)
-    doorServo.detach()
 
 
 def door_lock():
-    doorServo.min()
+    controlDoor(10)
     time.sleep(0.5)
-    doorServo.detach()
 
 
 def insertDb(id, name):

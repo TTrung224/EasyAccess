@@ -46,17 +46,17 @@ import datetime
 
 # subjects = {}
 # subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 29, 20, 55, 32, 792316), datetime.date(2022, 9, 10)]}
-#
-# with open("data/labels.pickle", 'wb') as file:
-#     pickle.dump(subjects, file)
-#     file.close()
-#
-#
-# with open('data/labels.pickle', 'rb') as file:
-#     subjects = pickle.load(file)
-#     file.close()
-#
-# print(subjects)
+
+with open("data/labels.pickle", 'wb') as file:
+    pickle.dump(subjects, file)
+    file.close()
+
+
+with open('data/labels.pickle', 'rb') as file:
+    subjects = pickle.load(file)
+    file.close()
+
+print(subjects)
 
 
 """****************"""
@@ -150,4 +150,4 @@ def retrain():
     upperFaceRecogniser.save(upperFaceTrainerDir)
     print("Train upper face recogniser successfully")
 
-retrain()
+# retrain()

@@ -9,12 +9,14 @@ setInterval(function(){
         if (req.readyState === 4) {
             if (req.status === 200) {
                 var jsonResponse = JSON.parse(req.responseText);
-                document.querySelector("#temp").innerHTML = "object temperature: " + jsonResponse.temp
+                document.querySelector("#temp").innerHTML = "object temperature: " + jsonResponse.temp + "°C"
                 if (jsonResponse.door == true){
-                    door = "opening"
-                } else{ door = "locking" }
-                document.querySelector("#door-status").innerHTML = "door: " + door
+                    iconSrc = "../static/opening_barrier.png"
+                } else{ iconSrc = "../static/closing_barrier.png" }
+                document.querySelector("#door-status").src = iconSrc
+                // document.querySelector("#door-status").innerHTML = "door: " + door
             }               
         }
     };
 }, 1000);
+

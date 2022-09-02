@@ -7,7 +7,7 @@ import json
 from flask_cors import CORS, cross_origin
 import flash
 
-dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None}
+dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None, 'regisStatus': False}
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
@@ -64,6 +64,7 @@ def register():
 
 @app.route('/regisScan', methods=["GET"])
 def regisScan():
+    dict['regisStatus'] = False
     return render_template('regisScan.html')
 
 
@@ -114,6 +115,15 @@ def modify_temp():
     data = json.loads(jsondata)
     dict['temp'] = data['temp']
     return "temperature updated"
+
+
+# modify regis status
+@app.route('/modify_regis_status', methods=['POST'])
+def modify_regis_status():
+    jsondata = request.get_json()
+    data = json.loads(jsondata)
+    dict['regisStatus'] = data['regisStatus']
+    return "registration status updated"
 
 
 # to check status sent from main program
