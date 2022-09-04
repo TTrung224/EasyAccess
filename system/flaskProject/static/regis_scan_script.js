@@ -11,7 +11,7 @@ var interval = setInterval(function(){
                 var jsonResponse = JSON.parse(req.responseText);
                 if (jsonResponse.regisStatus === true){
                     document.querySelector(".move-to-mask-res").classList.remove("disabled")
-                    alert("train successfully")
+                    alert("register successfully")
                     clearInterval(interval)
                 }
             }

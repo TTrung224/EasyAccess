@@ -87,15 +87,15 @@ def controlDoor(angle):
     GPIO.setup(13, GPIO.OUT)
     pwm=GPIO.PWM(13, 50)
     pwm.start(0)
-    duty = angle / 18 + 2
-    GPIO.output(13, True)
-    pwm.ChangeDutyCycle(duty)
+	duty = angle / 18 + 2
+	GPIO.output(13, True)
+	pwm.ChangeDutyCycle(duty)
     # 1 round: 0.68
     # 1.5 round: 1.36
     # 2 round: 2.04
-    time.sleep(2.04)
-    GPIO.output(13, False)
-    pwm.ChangeDutyCycle(0)
+	time.sleep(2.04)
+	GPIO.output(13, False)
+	pwm.ChangeDutyCycle(0)
     pwm.stop()
     GPIO.cleanup()
 
@@ -176,7 +176,7 @@ while True:
 
     print("temperature = " + str(obj_tem))
 
-    # remember to change condition when demo
+    # remember to change condition
     if (face_recognition == True) and (obj_tem > BASE_DEGREE) and (obj_tem < SICK_DEGREE):
         door_open()
         try:

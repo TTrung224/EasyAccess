@@ -61,7 +61,6 @@ def register():
         return redirect("registration?error=wrongDate")
     return redirect("regisScan?ID=" + case)
 
-
 @app.route('/regisScan', methods=["GET"])
 def regisScan():
     dict['regisStatus'] = False

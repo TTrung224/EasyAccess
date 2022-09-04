@@ -16,13 +16,13 @@
             <label for="name">Name</label>
             <input type="text" id="name" name="Name" required>
             <label for="type">Type</label>
-            <select name="type" id="type" required onclick="ShowAndHide()">
+            <select name="type" id="type" required>
                 <option value="" disabled selected>Choose user type</option>
                 <option value="student">Student</option>
                 <option value="staff">Staff</option>
                 <option value="visitor">Visitor</option>
             </select>
-            <label for="exp-day">Expiration Date</label>
+            <label id="exp-day-label" for="exp-day">Expiration Date</label>
             <input type="date" id="exp-day" name="expireDate" required>
             <input type="submit" placeholder="Register" class="submit-btn">
         </form>

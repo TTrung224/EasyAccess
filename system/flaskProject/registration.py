@@ -258,15 +258,16 @@ def registerGetInfo(id, name, type, expiration):
     if checkExist(uid):
         print("ID existed")
         return "existed"
-
+        
     expiration = dateHandle(expiration)
-    if expiration is None:
-        print("wrong date format")
-        return "wrong-date"
 
     timeNow = datetime.now()
     if type == "visitor":
         expiration = timeNow.date() + timedelta(days=1)
+
+    if expiration is None:
+        print("wrong date format")
+        return "wrong-date"
 
     # Get the subject dictionary
     with open(dictionaryDir, 'rb') as file:

@@ -10,16 +10,17 @@ if(urlParams.get('error') == 'existed'){
 }
 
 
-
-function ShowAndHide(){
+document.querySelector(".regis-form").addEventListener("mousemove",function(){
     var getType = document.querySelector("#type")
     var expirationInput = document.querySelector('#exp-day')
     console.log(getType.value) 
     if(getType.value == 'visitor'){
         expirationInput.required = false;
-        expirationInput.style.display ='none';
-    }else{expirationInput.style.display = "block";
-    expirationInput.required = true;
-    }
-    
-}
+        expirationInput.style.display = 'none';
+        document.querySelector('#exp-day-label').style.display = 'none';
+    }else{
+        expirationInput.style.display = "block";
+        expirationInput.required = true;
+        document.querySelector('#exp-day-label').style.display = "block";
+    } 
+})

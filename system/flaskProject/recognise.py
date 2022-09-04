@@ -38,40 +38,47 @@ def predict(test_img, face_recogniser, subjects):
         face, rect = detect_face(faceNet, img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
+        # draw a rectangle around face detected
+        draw_rectangle(img, rect)
 
         expiration = check_expire(str(label))
         if expiration == "0010":
             expirationText = "Expired"
+            expired = True
         elif expiration == "1":
             expirationText = "Valid"
             expired = False
 
-        draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
-
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 50 or expired is True:
-            # draw a rectangle around face detected
-            draw_rectangle(img, rect)
+        if percent < 50:
             # draw name of predicted person
-            draw_text(img, "unknown", rect[0], rect[1] - 5)
+            label_text = "Unknow"
+        elif expired is True:
+            uid = uidSystemHandle(str(label))
+            percent = "{0}%".format(percent)
+            # get name of respective label returned by face recognizer
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
+            draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
         else:
             uid = uidSystemHandle(str(label))
             percent = "{0}%".format(percent)
             # get name of respective label returned by face recognizer
             # label_text = subjects[str(label)][0] + " - " + percent
             label_text = subjects[str(label)][0]
+            draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
             dict_holder = {"status": True, "ID": uid, "name": subjects[str(label)][0]}
             try:
                 s = requests.post(
                     server_address, json=json.dumps(dict_holder)).content
             except Exception:
                 pass
-            # draw a rectangle around face detected
-            draw_rectangle(img, rect)
-            # draw name of predicted person
-            draw_text(img, label_text, rect[0], rect[1] - 5)
+        # draw name of predicted person
+        draw_text(img, label_text, rect[0], rect[1] - 5)
+    except Exception as e:
+        print(e.args)
     finally:
         return img
 
@@ -87,41 +94,45 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         face, rect = getUpperFaceImg(img)
         # predict the image using our face recognizer
         label, percent = face_recogniser.predict(face)
-        expiration = check_expire(str(label))
+        # draw a rectangle around face detected
+        draw_rectangle(img, rect)
 
+        expiration = check_expire(str(label))
         if expiration == "0010":
             expirationText = "Expired"
+            expired = True
         elif expiration == "1":
             expirationText = "Valid"
             expired = False
 
-        draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
-
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 20 or expired is True:
-            # draw a rectangle around face detected
-            draw_rectangle(img, rect)
+        if percent < 20:
             # draw name of predicted person
-            draw_text(img, "unknown", rect[0], rect[1] - 5)
-
+            label_text = "Unknown"
+        elif expired is True:
+            uid = uidSystemHandle(str(label))
+            percent = "{0}%".format(percent)
+            # get name of respective label returned by face recognizer
+            # label_text = subjects[str(label)][0] + " - " + percent
+            label_text = subjects[str(label)][0]
+            draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
         else:
             uid = uidSystemHandle(str(label))
             percent = "{0}%".format(percent)
             # get name of respective label returned by face recognizer
             # label_text = subjects[str(label)][0] + " - " + percent
             label_text = subjects[str(label)][0]
+            draw_text(img, expirationText, rect[0], rect[1] + rect[3] + 30)
             dict_holder = {"status": True, "ID": uid, "name": subjects[str(label)][0]}
             try:
                 s = requests.post(
                     server_address, json=json.dumps(dict_holder)).content
             except Exception:
                 pass
-            # draw a rectangle around face detected
-            draw_rectangle(img, rect)
-            # draw name of predicted person
-            draw_text(img, label_text, rect[0], rect[1] - 5)
+        # draw name of predicted person
+        draw_text(img, label_text, rect[0], rect[1] - 5)
 
     except Exception as e:
         print(e.args)
