@@ -9,13 +9,16 @@ from tensorflow.keras.models import load_model
 from registration import getUpperFaceImg, uidSystemHandle
 from expiration import check_expire
 
-server_address = 'http://127.0.0.1:5000/modify_status'
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 dictionaryDir = os.path.join(BASE_DIR, "data/labels.pickle")
 fullFaceTrainerDir = os.path.join(BASE_DIR, "data/fullFaceTrainer.yml")
 upperFaceTrainerDir = os.path.join(BASE_DIR, "data/upperFaceTrainer.yml")
 
+ipFile = os.path.join(BASE_DIR, "ipAddress.txt")
+file = open(ipFile, 'r')
+server_address = 'http://' + file.read().strip() + ":5000/modify_status"
+# server_address = 'http://127.0.0.1:5000/modify_status'
+file.close()
 
 prototxtPath = os.path.join(BASE_DIR, "face_detector/deploy.prototxt")
 weightsPath = os.path.join(

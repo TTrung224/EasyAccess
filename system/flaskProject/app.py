@@ -1,11 +1,24 @@
 from urllib import response
 from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
 import imagezmq
-import recognise
-import registration
 import json
 from flask_cors import CORS, cross_origin
-import flash
+import socket
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Get and save the server IP address into txt file
+hostname = socket.gethostname()   
+IPAddress = socket.gethostbyname(hostname)
+ipFile = os.path.join(BASE_DIR, "ipAddress.txt")
+f = open(ipFile, "w")
+f.write(IPAddress)
+f.close()
+print(IPAddress)
+
+import recognise
+import registration
 
 dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None, 'regisStatus': False}
 

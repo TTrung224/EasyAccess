@@ -11,7 +11,7 @@ import requests
 import RPi.GPIO as GPIO
 import os
 
-ipFile = "/ip.txt"
+ipFile = "/home/pi/Desktop/ip.txt"
 
 if os.path.exists(ipFile):
     # address of the server

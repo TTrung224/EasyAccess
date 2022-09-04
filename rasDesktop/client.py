@@ -5,7 +5,7 @@ import socket
 import time
 import os
 
-ipFile = "/ip.txt"
+ipFile = "/home/pi/Desktop/ip.txt"
 
 if os.path.exists(ipFile):
 	# address of the server

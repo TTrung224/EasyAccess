@@ -1,4 +1,12 @@
-var serverAddress = "http://192.168.2.248:5000/status_send"
+var serverAddress
+const fs = require("fs");
+fs.readFile("/ipAddress.txt", (err, data) => {
+    if (err) throw err;
+    
+    serverAddress = "http://" + data.toString() + ":5000/status_send"
+});
+
+// var serverAddress = "http://192.168.2.248:5000/status_send"
 
 var interval = setInterval(function(){
     var req = new XMLHttpRequest();
