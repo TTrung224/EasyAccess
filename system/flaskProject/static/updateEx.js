@@ -1,3 +1,21 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+document.querySelector(".user-info .uid").innerHTML = "ID: " + urlParams.get('ID')
+document.querySelector(".user-info .uname").innerHTML = "Name: " + urlParams.get('name')
+document.querySelector(".user-info .regist-date").innerHTML = "Registration Datetime: " + urlParams.get('regisDate')
+document.querySelector(".user-info .expire-date").innerHTML = "Expiration Date: " + urlParams.get('expireDate')
+document.querySelector(".update-ex-form .uid").value = urlParams.get('UID')
+
+document.querySelector(".date-picker .dates").addEventListener("mousemove",function(){
+    var newExDateInput = document.querySelector(".update-ex-form .new-ex-date")
+    var newExDate = document.querySelector('.date-picker .selected-date').innerHTML
+    const array = newExDate.split(" ");
+	validDate = array[4] + "-" + array[2] + "-" + array[0]
+	newExDateInput.value = validDate
+})
+
+
 const date_picker_element = document.querySelector('.date-picker');
 const selected_date_element = document.querySelector('.date-picker .selected-date');
 const dates_element = document.querySelector('.date-picker .dates');

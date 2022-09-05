@@ -1,3 +1,14 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+if(urlParams.get('error') == 'noResult'){
+    alert("There are not such user in the system, please try again.");
+}else if(urlParams.get('error') == 'anErrorOccur'){
+    alert("There is an error occured in the proccess, please try again.");
+}else if(urlParams.get('status') == 'success'){
+    alert("Update expiration successfully!");
+}
+
+
 // getting all required elements
 const searchWrapper = document.querySelector(".search-input");
 const inputBox = searchWrapper.querySelector("input");
@@ -36,16 +47,16 @@ inputBox.onkeyup = (e)=>{
     }
 }
 
-function select(element){
-    let selectData = element.textContent;
-    inputBox.value = selectData;
-    icon.onclick = ()=>{
-        webLink = `C:\Users\James William Deston\Desktop\EasyAccess\system\flaskProject\templates\searchID.html`;
-        linkTag.setAttribute("href", webLink);
-        linkTag.click();
-    }
-    searchWrapper.classList.remove("active");
-}
+// function select(element){
+//     let selectData = element.textContent;
+//     inputBox.value = selectData;
+//     icon.onclick = ()=>{
+//         webLink = `C:\Users\James William Deston\Desktop\EasyAccess\system\flaskProject\templates\searchID.html`;
+//         linkTag.setAttribute("href", webLink);
+//         linkTag.click();
+//     }
+//     searchWrapper.classList.remove("active");
+// }
 
 function showSuggestions(list){
     let listData;

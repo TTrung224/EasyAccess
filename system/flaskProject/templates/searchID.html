@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Search for user Id</title>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-  </head>
-  <body>
+</head>
+<body>
     <h1>Search<span> </span>ID</h1>
     <div class="wrapper">
-      <div class="search-input">
-        <a href="" target="_blank" hidden></a>
-        <input type="text" placeholder="Type to search..">
-        <div class="autocom-box">
-          <!-- here list are inserted from javascript -->
-        </div>
-        <div class="icon"><i class="fas fa-search"></i></div>
-      </div>
+        <form action="searching" method="Get" class="search-input">
+            <!-- <a href="" target="_blank" hidden></a> -->
+            <div class="form-left">
+                <input type="text" placeholder="person ID" name="ID">
+                <select name="type" id="type" required>
+                    <option value="" disabled selected>Choose user type</option>
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
+                    <option value="visitor">Visitor</option>
+                </select>
+            </div>
+            <div class="autocom-box">
+              <!-- here list are inserted from javascript -->
+            </div>
+            
+            <div class="form-right">
+                <button type="submit" class="icon"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
     </div>
 
     <script src="js/suggestions.js"></script>
     <script type="text/javascript" src="{{url_for('static',filename='searchID.js')}}"></script>
 
-  </body>
+</body>
 </html>

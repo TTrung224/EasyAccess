@@ -142,7 +142,7 @@ def uidInputHandle(uid, type):
     return uid
 
 
-# function to handle the user id input
+# function to handle the user id to display to user
 def uidSystemHandle(labelUid):
 
     prefix = labelUid[0]
@@ -157,6 +157,7 @@ def uidSystemHandle(labelUid):
     else:
         return False
     return uid
+
 
 # function to handle the user string date input
 def dateHandle(strDate):

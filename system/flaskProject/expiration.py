@@ -4,7 +4,7 @@ from datetime import date
 import os
 import pickle
 import functions
-from registration import uidInputHandle
+from registration import uidInputHandle, uidSystemHandle, dateHandle
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(BASE_DIR, "data/labels.pickle")
@@ -12,30 +12,35 @@ file_path = os.path.join(BASE_DIR, "data/labels.pickle")
 
 
 with open(file_path, 'rb') as file:
-    expire_time_ids = pickle.load(file)
+    subjects = pickle.load(file)
     file.close()
 
 date_format = "%d:%m:%Y"
 
-# input date is a datetime object
-# Function to update expire date of user
-def set_expiration_time(uid, expire_time):
-    """assume validated String id"""
 
-    # process user id
+# input date is a String
+# input id is validated
+# Function to update expire date of user
+def set_expiration_time(uid, expire_time_string):
+    # # process user id
     # uid = uidInputHandle(id, type)
     # if uid is False:
-    #     print("wrong user id format")
+    #     print("uid error")
     #     return False
-
-    if uid not in expire_time_ids:
-        print("id not exist")
+    
+    # process user input date
+    expire_time = dateHandle(expire_time_string)
+    if expire_time_string is None:
+        print("date error")
+        return False
+    print(uid)
+    if uid not in subjects:
         return False
     else:
-        expire_time_ids[uid][2] = expire_time
+        subjects[uid][2] = expire_time
 
     with open("data/labels.pickle", 'wb') as file:
-        pickle.dump(expire_time_ids, file)
+        pickle.dump(subjects, file)
         file.close()
     return True
 
@@ -53,16 +58,30 @@ def check_expire(id):
     #     print("wrong user id format")
     #     return None
 
-    if id not in expire_time_ids:
+    if id not in subjects:
         return "0000"
     else:
-        expire_time = expire_time_ids[id][2]
+        expire_time = subjects[id][2]
         today = date.today()
         if today > expire_time:
             return "0010"
         else:
             return "1"
 
+
 # expire_time = datetime.strptime("09:08:2022", "%d:%m:%Y").date()
 # set_expiration_time("3891724", expire_time)
 # print(check_expire("3891724"))
+
+
+def searchUser(id, type):
+    uid = uidInputHandle(id, type)
+    if uid is False:
+        uid = ''
+    try:
+        info = subjects[uid]
+    except Exception as e:
+        return False, False, False
+
+    id = uidSystemHandle(uid)
+    return id, uid, info

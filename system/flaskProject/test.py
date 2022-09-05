@@ -52,11 +52,13 @@ import datetime
 #     file.close()
 
 
-# with open('data/labels.pickle', 'rb') as file:
-#     subjects = pickle.load(file)
-#     file.close()
+with open('data/labels.pickle', 'rb') as file:
+    subjects = pickle.load(file)
+    file.close()
 
-# print(subjects)
+a = subjects['13891724'][2]
+print(subjects)
+print(a)
 
 
 """****************"""
@@ -151,10 +153,3 @@ def retrain():
     print("Train upper face recogniser successfully")
 
 # retrain()
-
-import socket   
-hostname=socket.gethostname()   
-IPAddr=socket.gethostbyname(hostname)   
-print("Your Computer Name is:"+hostname)   
-print("Your Computer IP Address is:"+IPAddr) 
-print(type(IPAddr)) 

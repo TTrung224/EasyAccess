@@ -5,6 +5,10 @@ import json
 from flask_cors import CORS, cross_origin
 import socket
 import os
+from registration import registerFace, registerGetInfo
+from recognise import recognise
+from expiration import searchUser, set_expiration_time
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,10 +19,8 @@ ipFile = os.path.join(BASE_DIR, "ipAddress.txt")
 f = open(ipFile, "w")
 f.write(IPAddress)
 f.close()
-print(IPAddress)
+# print(IPAddress)
 
-import recognise
-import registration
 
 dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None, 'regisStatus': False}
 
@@ -35,14 +37,14 @@ def index():
 
 @app.route('/recogVideo')
 def recogVideo():
-    return Response(recognise.recognise(image_hub),
+    return Response(recognise(image_hub),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/regisVideo', methods=["GET"])
 def regisVideo():
     id = request.args.get("ID")
-    return Response(registration.registerFace(id, image_hub),
+    return Response(registerFace(id, image_hub),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -65,7 +67,7 @@ def register():
     type = request.args.get("type")
     expiration = request.args.get("expireDate")
 
-    case = registration.registerGetInfo(id, name, type, expiration)
+    case = registerGetInfo(id, name, type, expiration)
     if case == "wrong-id":
         return redirect("registration?error=wrongId")
     elif case == "existed":
@@ -143,15 +145,45 @@ def modify_regis_status():
 def server_status_check():
     return jsonify(dict)
 
+
 #
 @app.route('/searchID')
 def searchID():
     return render_template('searchID.html')
 
+
+#
+@app.route('/searching', methods=['GET'])
+def searching():
+    UserInputId = request.args.get("ID")
+    type = request.args.get("type")
+
+    id, uid, info = searchUser(UserInputId, type)
+
+    if id is False:
+        return redirect("searchID?error=noResult")
+
+    regisDateTime = info[1].strftime("%m/%d/%Y-%H:%M:%S")
+    expireDate = info[2].strftime("%m/%d/%Y")
+    return redirect('updateEx?ID='+id+'&UID='+uid+'&name='+info[0]+'&regisDate='+regisDateTime+'&expireDate='+expireDate)
+
+
 #
 @app.route('/updateEx')
 def updateEx():
     return render_template('updateEx.html')
+
+
+@app.route('/updatingEx', methods=['GET'])
+def updatingEx():
+    uid = request.args.get("ID")
+    print(uid)
+    expDate = request.args.get("newExDate")
+    print(expDate)
+    status = set_expiration_time(uid, expDate)
+    if status is False:
+        return redirect("searchID?error=anErrorOccur")
+    return redirect("searchID?status=success")
 
 
 if __name__ == "__main__":

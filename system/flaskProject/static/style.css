@@ -58,7 +58,7 @@ select {
 
 }
 
-.submit-btn:hover {
+.regis-form .submit-btn:hover {
     background-color: rgb(0, 255, 170);
 }
 
@@ -128,11 +128,29 @@ select {
 }
 
 .wrapper .search-input{
+  display: flex;
+  flex-direction: row;
   background: #fff;
   width: 100%;
   border-radius: 5px;
   position: relative;
   box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+}
+
+.search-input .form-right{
+  background-color: rgb(201, 201, 201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input .form-right button{
+  background-color: none;
+  border: none;
+}
+
+.search-input #type{
+  margin-left: 20px
 }
 
 .search-input input{
@@ -143,7 +161,7 @@ select {
   border-radius: 5px;
   padding: 0 60px 0 20px;
   font-size: 18px;
-  box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+  /* box-shadow: 0px 1px 5px rgba(0,0,0,0.1); */
 }
 
 .search-input.active input{
@@ -176,6 +194,7 @@ select {
 .search-input.active .autocom-box li{
   display: block;
 }
+
 .autocom-box li:hover{
   background: #efefef;
 }
@@ -184,7 +203,7 @@ select {
   position: absolute;
   right: 0px;
   top: 0px;
-  height: 55px;
+  height: 100%;
   width: 55px;
   text-align: center;
   line-height: 55px;
@@ -209,18 +228,16 @@ h1 span {
 	box-sizing: border-box;
 }
 
-
-
-h1 {
-	margin: 30px 0px;
-	color: #313131;
-	font-size: 42px;
-	font-weight: 900;
-	text-align: center;
-}
-
-h1 span {
-	font-weight: 300;
+.user-info{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  border-style: solid;
+  border-width: 0.1;
+  border-radius: 8px;
+  border-color: #bfbfbf;
+  padding: 10px 0px;
 }
 
 .date-picker {
@@ -296,12 +313,33 @@ h1 span {
 	grid-template-columns: repeat(7, 1fr);
 	height: 200px;
 }
+
 .date-picker .dates .days .day { 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: #313131;
 }
+
 .date-picker .dates .days .day.selected {
 	background-color: #00CA85;
+}
+
+.update-ex-form{
+  display: flex;
+  justify-content: center;
+}
+
+.update-ex-form .submit-btn {
+  background-color: rgb(108, 251, 203);
+  border-style: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  padding: 10px 40px;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.update-ex-form .submit-btn:hover {
+  background-color: rgb(0, 255, 170);
 }

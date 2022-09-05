@@ -6,11 +6,16 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Date Picker</title>
 
-	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
-	<h1>Update<span></span>Expiration</h1>
-
+	<h1>Update Expiration</h1>
+	<div class="user-info">
+		<p class="uid"></p>
+		<p class="uname"></p>
+		<p class="regist-date"></p>
+		<p class="expire-date"></p>
+	</div>
 	<div class="date-picker">
 		<div class="selected-date"></div>
 
@@ -22,9 +27,15 @@
 			</div>
 
 			<div class="days"></div>
+
+			<form action="updatingEx" method="GET" class="update-ex-form" hidden>
+				<input type="text" name="ID" class="uid" >
+				<input type="text" name="newExDate" class="new-ex-date" hidden>
+				<input type="submit" class="submit-btn">
+			</form>
 		</div>
 	</div>
-
+	
 	<script type="text/javascript" src="{{url_for('static',filename='updateEx.js')}}"></script>
 </body>
 </html>
