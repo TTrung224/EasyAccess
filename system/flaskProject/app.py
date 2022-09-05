@@ -143,6 +143,16 @@ def modify_regis_status():
 def server_status_check():
     return jsonify(dict)
 
+#
+@app.route('/searchID')
+def searchID():
+    return render_template('searchID.html')
+
+#
+@app.route('/updateEx')
+def updateEx():
+    return render_template('updateEx.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
