@@ -1,6 +1,10 @@
-var serverAddress = "http://192.168.2.248:5000/status_send"
+var ip = location.host;
+var serverAddress = "http://" + ip.toString() + "/status_send"
+
+// var serverAddress = "http://192.168.2.248:5000/status_send"
 
 setInterval(function(){
+    console.log(serverAddress)
     var req = new XMLHttpRequest();
     req.open("POST", serverAddress);
     req.setRequestHeader("Content-type", "application/json");

@@ -6,9 +6,6 @@ from flask_cors import CORS, cross_origin
 import socket
 import os
 from registration import registerFace, registerGetInfo
-from recognise import recognise
-from expiration import searchUser, set_expiration_time
-
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,6 +18,8 @@ f.write(IPAddress)
 f.close()
 # print(IPAddress)
 
+import recognise
+import expiration
 
 dict = {'status': False, 'ID': '', 'name': '', 'door': False, 'temp': None, 'regisStatus': False}
 
@@ -37,7 +36,7 @@ def index():
 
 @app.route('/recogVideo')
 def recogVideo():
-    return Response(recognise(image_hub),
+    return Response(recognise.recognise(image_hub),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -158,7 +157,7 @@ def searching():
     UserInputId = request.args.get("ID")
     type = request.args.get("type")
 
-    id, uid, info = searchUser(UserInputId, type)
+    id, uid, info = expiration.searchUser(UserInputId, type)
 
     if id is False:
         return redirect("searchID?error=noResult")
@@ -180,7 +179,7 @@ def updatingEx():
     print(uid)
     expDate = request.args.get("newExDate")
     print(expDate)
-    status = set_expiration_time(uid, expDate)
+    status = expiration.set_expiration_time(uid, expDate)
     if status is False:
         return redirect("searchID?error=anErrorOccur")
     return redirect("searchID?status=success")

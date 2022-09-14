@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(BASE_DIR, "data/labels.pickle")
 # file_path = "expire_list.txt"
 
-
 with open(file_path, 'rb') as file:
     subjects = pickle.load(file)
     file.close()
@@ -31,9 +30,9 @@ def set_expiration_time(uid, expire_time_string):
     # process user input date
     expire_time = dateHandle(expire_time_string)
     if expire_time_string is None:
-        print("date error")
+        # print("date error")
         return False
-    print(uid)
+    # print(uid)
     if uid not in subjects:
         return False
     else:
@@ -51,7 +50,7 @@ def set_expiration_time(uid, expire_time_string):
 # 1: not expired yet
 
 # *may include return time to expire date
-def check_expire(id):
+def check_expire(id, subjects):
     # # process user id
     # uid = functions.uidHandle(id, type)
     # if uid is False:

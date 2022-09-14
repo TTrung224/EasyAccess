@@ -86,11 +86,11 @@ def trainFaceData(uid):
             upperFace = face[y:y + round(upperFaceRatio * h), x:x + w]
 
             # TODO: delete after test
-            cv2.imwrite(
-                "/Users/trungtran/Documents/workSpace/EasyAccess/system/flaskProject/face_training_data/testUpper" + "/" + uid + "_" +
-                image_name,
-                upperFace
-            )
+            # cv2.imwrite(
+            #     "/Users/trungtran/Documents/workSpace/EasyAccess/system/flaskProject/face_training_data/testUpper" + "/" + uid + "_" +
+            #     image_name,
+            #     upperFace
+            # )
 
             upperFaces.append(upperFace)
 
@@ -277,7 +277,7 @@ def registerGetInfo(id, name, type, expiration):
 
     subjects[uid] = [name, timeNow, expiration]
 
-    with open("data/labels.pickle", 'wb') as file:
+    with open(dictionaryDir, 'wb') as file:
         pickle.dump(subjects, file)
         file.close()
     return uid

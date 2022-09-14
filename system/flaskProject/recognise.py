@@ -44,7 +44,7 @@ def predict(test_img, face_recogniser, subjects):
         # draw a rectangle around face detected
         draw_rectangle(img, rect)
 
-        expiration = check_expire(str(label))
+        expiration = check_expire(str(label), subjects)
         if expiration == "0010":
             expirationText = "Expired"
             expired = True
@@ -55,7 +55,7 @@ def predict(test_img, face_recogniser, subjects):
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 50:
+        if percent < 70:
             # draw name of predicted person
             label_text = "Unknow"
         elif expired is True:
@@ -100,7 +100,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         # draw a rectangle around face detected
         draw_rectangle(img, rect)
 
-        expiration = check_expire(str(label))
+        expiration = check_expire(str(label), subjects)
         if expiration == "0010":
             expirationText = "Expired"
             expired = True
@@ -111,7 +111,7 @@ def upperFacePredict(test_img, face_recogniser, subjects):
         percent = round(100 - percent)
         # print(label, percent)
 
-        if percent < 20:
+        if percent < 40:
             # draw name of predicted person
             label_text = "Unknown"
         elif expired is True:

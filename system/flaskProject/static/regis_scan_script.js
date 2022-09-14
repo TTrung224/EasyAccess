@@ -1,10 +1,5 @@
-var serverAddress
-const fs = require("fs");
-fs.readFile("/ipAddress.txt", (err, data) => {
-    if (err) throw err;
-    
-    serverAddress = "http://" + data.toString() + ":5000/status_send"
-});
+var ip = location.host;
+var serverAddress = "http://" + ip.toString() + "/status_send"
 
 // var serverAddress = "http://192.168.2.248:5000/status_send"
 

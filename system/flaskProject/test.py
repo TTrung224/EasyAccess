@@ -45,20 +45,20 @@ import datetime
 """****************"""
 
 # subjects = {}
-# subjects = {'13891724': ['Trung', datetime.datetime(2022, 8, 29, 20, 55, 32, 792316), datetime.date(2022, 9, 10)]}
-
+# subjects = {'13852304': ['Thong Doan', datetime.datetime(2022, 9, 13, 18, 47, 6, 716489), datetime.date(2022, 10, 1)]}
+#
 # with open("data/labels.pickle", 'wb') as file:
 #     pickle.dump(subjects, file)
 #     file.close()
+#
+#
+# with open('data/labels.pickle', 'rb') as file:
+#     subjects = pickle.load(file)
+#     file.close()
 
-
-with open('data/labels.pickle', 'rb') as file:
-    subjects = pickle.load(file)
-    file.close()
-
-a = subjects['13891724'][2]
-print(subjects)
-print(a)
+# a = subjects['13891724'][2]
+# print(subjects)
+# print(a)
 
 
 """****************"""

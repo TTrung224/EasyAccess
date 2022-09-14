@@ -93,7 +93,7 @@ def controlDoor(angle):
     # 1 round: 0.68
     # 1.5 round: 1.36
     # 2 round: 2.04
-	time.sleep(2.04)
+	time.sleep(0.68)
 	GPIO.output(13, False)
 	pwm.ChangeDutyCycle(0)
     pwm.stop()
